@@ -49,10 +49,6 @@
 1. 安装 [Livox SDK2](https://github.com/Livox-SDK/Livox-SDK2)
 
     ```sh
-    sudo apt install cmake
-    ```
-
-    ```sh
     git clone https://github.com/Livox-SDK/Livox-SDK2.git
     cd ./Livox-SDK2/
     mkdir build
@@ -61,7 +57,19 @@
     sudo make install
     ```
 
-2. 克隆仓库
+2. 安装 [small_icp](https://github.com/koide3/small_gicp)
+
+    ```zsh
+    sudo apt install -y libeigen3-dev libomp-dev
+
+    git clone https://github.com/koide3/small_gicp.git
+    cd small_gicp
+    mkdir build && cd build
+    cmake .. -DCMAKE_BUILD_TYPE=Release && make -j
+    sudo make install
+    ```
+
+3. 克隆仓库
 
     ```zsh
     mkdir -p ~/ros_ws/src
@@ -72,20 +80,20 @@
     git clone --recursive https://github.com/LihanChen2004/pb2025_sentry_nav.git
     ```
 
-3. 安装依赖
+4. 安装依赖
 
     ```zsh
     cd ~/ros_ws
     rosdep install -r --from-paths src --ignore-src --rosdistro $ROS_DISTRO -y
     ```
 
-4. 编译
+5. 编译
 
     ```zsh
     colcon build --symlink-install -DCMAKE_BUILD_TYPE=Release
     ```
 
-5. 下载先验点云
+6. 下载先验点云
 
     先验点云用于 point_lio 初始化，由于点云文件体积较大，故不放在 git 中，可前往 [FlowUs](https://flowus.cn/lihanchen/share/87f81771-fc0c-4e09-a768-db01f4c136f4?code=4PP1RS) 下载。也可以选择不使用先验点云，只需要到 [point_lio.yaml](./pb2025_nav_bringup/config/simulation/point_lio.yaml) 中将 `prior_pcd.enable` 设置为 `False` 即可。
 
