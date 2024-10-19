@@ -306,3 +306,35 @@ velocity_smoother:
     odom_duration: 0.1
     deadband_velocity: [0.0, 0.0, 0.0]
     velocity_timeout: 1.0
+
+teleop_twist_joy_node:
+  ros__parameters:
+    axis_linear:
+      x: 1                        # 左摇杆的水平轴
+      y: 0                        # 左摇杆的垂直轴
+      z: -1                       # Disable
+    scale_linear:
+      x: 1.5
+      y: 1.5
+      z: 0.0
+    scale_linear_turbo:
+      x: 3.0
+      y: 3.0
+      z: 0.0
+
+    axis_angular:
+      roll: -1                    # Disable
+      pitch: -1                   # Disable
+      yaw: 3                      # 右摇杆的水平轴
+    scale_angular:
+      roll: 0.0
+      pitch: 0.0
+      yaw: 3.0
+    scale_angular_turbo:
+      roll: 0.0
+      pitch: 0.0
+      yaw: 6.0
+
+    require_enable_button: true
+    enable_button: 4              # L1 shoulder button
+    enable_turbo_button: 5        # R1 shoulder button

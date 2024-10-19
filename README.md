@@ -143,6 +143,17 @@ world:=rmul_2024
 
   - `world` : 仿真世界名，关联栅格地图的读取。可选参数 `rmul_2024` or `rmuc_2024`。
 
+3.4 ps4 手柄控制
+
+![ps4](https://gmedia.playstation.com/is/image/SIEPDC/ps4-accessories-ds4-glacier-white-screen-01-en-28oct20?$1600px$)
+
+默认情况下，PS4 手柄控制已开启。
+
+左肩键：安全按键，按下后才会发布控制指令到 `cmd_vel`  
+右肩键：加速按键，按下后会使速度控制指令变为原先的两倍  
+左摇杆：发布线速度  
+右摇杆：发布加速度
+
 ## TODO
 
 - [x] 优化 lidar_odom 和 odom 的关系。目前可以看到机器人底盘实际上是沉在地图下的，雷达与地图高度重合
