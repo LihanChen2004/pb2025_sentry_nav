@@ -36,7 +36,7 @@
 > [!NOTE]  
 > 我们做出了艰难的决定
 >
-> 经过一个多月的尝试，考虑到代码的拓展性和可维护性名，最终决定放弃 CMU 的导航框架，转而使用 ROS2 的 Navigation2。  
+> 经过一个多月的尝试，考虑到代码的拓展性和可维护性，最终决定放弃 CMU 的导航框架，转而使用 ROS2 的 Navigation2。  
 > 但我们保留了 CMU Local Planner 局部路径规划的 demo，可以阅读 [3.1节](#31-cmu-navigation-demo) 启动 CMU demo
 
 ## 二. 环境配置
@@ -90,7 +90,7 @@
 5. 编译
 
     ```zsh
-    colcon build --symlink-install -DCMAKE_BUILD_TYPE=Release
+    colcon build --symlink-install --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
     ```
 
 6. 下载先验点云
@@ -141,18 +141,16 @@ world:=rmul_2024
 
 - 可选参数
 
-  - `world` : 仿真世界名，关联栅格地图的读取。可选参数 `rmul_2024` or `rmuc_2024`。
+  - `world` : 仿真世界名，关联栅格地图的读取。可选项 `rmul_2024` or `rmuc_2024`。
 
 3.4 ps4 手柄控制
-
-![ps4](https://gmedia.playstation.com/is/image/SIEPDC/ps4-accessories-ds4-glacier-white-screen-01-en-28oct20?$1600px$)
 
 默认情况下，PS4 手柄控制已开启。
 
 左肩键：安全按键，按下后才会发布控制指令到 `cmd_vel`  
 右肩键：加速按键，按下后会使速度控制指令变为原先的两倍  
 左摇杆：发布线速度  
-右摇杆：发布加速度
+右摇杆：发布角速度
 
 ## TODO
 
