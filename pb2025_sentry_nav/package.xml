@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>pb2025_sentry_nav</name>
+  <version>1.0.0</version>
+  <description>SMBU PolarBear Team Sentry Navigation for Robomaster 2025</description>
+  <maintainer email="lihanchen2004@163.com">Lihan Chen</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <!-- pb25_nav_bringup doesn't belong for recursive dependencies -->
+  <depend>fake_vel_transform</depend>
+  <depend>ign_sim_pointcloud_tool</depend>
+  <depend>loam_interface</depend>
+  <depend>sensor_scan_generation</depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

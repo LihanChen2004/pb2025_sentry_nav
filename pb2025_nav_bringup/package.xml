@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>pb2025_nav_bringup</name>
+  <version>1.0.0</version>
+  <description>pb2025_nav_bringup</description>
+  <maintainer email="lihanchen2004@163.com">Lihan Chen</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <build_depend>navigation2</build_depend>
+  <build_depend>nav2_common</build_depend>
+  <build_depend>launch_ros</build_depend>
+
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>navigation2</exec_depend>
+  <exec_depend>nav2_common</exec_depend>
+  <exec_depend>teleop_twist_joy</exec_depend>
+  <exec_depend>pb2025_sentry_nav</exec_depend>
+  <exec_depend>livox_ros_driver2</exec_depend>
+  <exec_depend>point_lio</exec_depend>
+  <exec_depend>pb_omni_pid_pursuit_controller</exec_depend>
+  <exec_depend>small_gicp_relocalization</exec_depend>
+
+  <test_depend>ament_lint_common</test_depend>
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_cmake_gtest</test_depend>
+  <test_depend>ament_cmake_pytest</test_depend>
+  <test_depend>launch</test_depend>
+  <test_depend>launch_testing</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

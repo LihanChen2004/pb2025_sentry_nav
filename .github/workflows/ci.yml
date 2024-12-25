@@ -1,0 +1,27 @@
+name: Build
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: rostooling/setup-ros-docker:ubuntu-jammy-ros-humble-desktop-latest
+    steps:
+      - name: Install Livox SDK
+        run: |
+          git clone https://github.com/Livox-SDK/Livox-SDK2.git
+          cd Livox-SDK2/
+          mkdir build
+          cd build
+          cmake .. && make -j
+          sudo make install
+
+      - name: Build pb2025_sentry_nav
+        uses: ros-tooling/action-ros-ci@v0.3
+        with:
+          package-name: pb2025_sentry_nav
+          target-ros2-distro: humble
