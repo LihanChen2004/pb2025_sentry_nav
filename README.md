@@ -1,7 +1,7 @@
 # pb2025_sentry_nav
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
-![Build](https://github.com/SMBU-PolarBear-Robot-Team/pb2025_sentry_nav/actions/workflows/ci.yml/badge.svg)
+![Build](https://github.com/SMBU-PolarBear-Robotics-Team/pb2025_sentry_nav/actions/workflows/ci.yml/badge.svg)
 
 > **仍在开发中，更新频率较快且不稳定，不考虑向前兼容。请谨慎使用**
 
@@ -23,7 +23,7 @@
 
     本项目大幅优化了坐标变换逻辑，考虑雷达原点 `lidar_odom` 与 底盘原点 `odom` 之间的变换
 
-    mid360 倾斜侧放在底盘上，使用 [point_lio](https://github.com/SMBU-PolarBear-Robot-Team/point_lio/tree/RM2025_SMBU_auto_sentry) 里程计，[small_gicp](https://github.com/SMBU-PolarBear-Robot-Team/small_gicp_relocalization) 重定位，[loam_interface](./loam_interface/) 会将 point_lio 输出的 `/cloud_registered` 从 `lidar_odom` 系转换到 `odom` 系，[sensor_scan_generation](./sensor_scan_generation/) 将 `odom` 系的点云转换到 `front_mid360` 系，并发布变换 `odom -> chassis`。
+    mid360 倾斜侧放在底盘上，使用 [point_lio](https://github.com/SMBU-PolarBear-Robotics-Team/point_lio/tree/RM2025_SMBU_auto_sentry) 里程计，[small_gicp](https://github.com/SMBU-PolarBear-Robotics-Team/small_gicp_relocalization) 重定位，[loam_interface](./loam_interface/) 会将 point_lio 输出的 `/cloud_registered` 从 `lidar_odom` 系转换到 `odom` 系，[sensor_scan_generation](./sensor_scan_generation/) 将 `odom` 系的点云转换到 `front_mid360` 系，并发布变换 `odom -> chassis`。
 
     ![frames_2024_11_16](https://raw.githubusercontent.com/LihanChen2004/picx-images-hosting/master/frames_2024_11_16.6f0pffsux6.webp)
 
@@ -45,7 +45,7 @@
 
 - Ubuntu 22.04
 - ROS: [Humble](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html)
-- 配套仿真包（可选）：[rm_gazebo_simulator](https://github.com/SMBU-PolarBear-Robot-Team/rmul24_gazebo_simulator)
+- 配套仿真包（可选）：[rm_gazebo_simulator](https://github.com/SMBU-PolarBear-Robotics-Team/rmul24_gazebo_simulator)
 
 1. 安装 [Livox SDK2](https://github.com/Livox-SDK/Livox-SDK2)
 
@@ -78,7 +78,7 @@
     ```
 
     ```zsh
-    git clone --recursive https://github.com/SMBU-PolarBear-Robot-Team/pb2025_sentry_nav.git
+    git clone --recursive https://github.com/SMBU-PolarBear-Robotics-Team/pb2025_sentry_nav.git
     ```
 
 4. 安装依赖
@@ -163,7 +163,7 @@
     2. 在真实环境中，我们**更推荐**使用独立的功能包发布机器人的 TF 信息，例如由上下位机串口通讯模块提供 gimbal_yaw 和 gimbal_pitch 的关节位姿，此时应将 `use_robot_state_pub` 设置为 False。
 
         如果没有完整的机器人系统，仅测试导航模块时，可将 `use_robot_state_pub` 设置为 True，此时导航模块会发布静态的机器人关节位姿数据以维护 TF 树。  
-        注：需要额外克隆并编译 [pb2025_robot_description](https://github.com/SMBU-PolarBear-Robot-Team/pb2025_robot_description.git)
+        注：需要额外克隆并编译 [pb2025_robot_description](https://github.com/SMBU-PolarBear-Robotics-Team/pb2025_robot_description.git)
 
 ### 3.3 手柄控制
 
@@ -184,6 +184,6 @@
 
 - [x] 加入 fake_vel_transform，应对云台旋转时，速度参考系变化剧烈的情况
 
-- [ ] 优化 [pb_omni_pid_pursuit_controller](https://github.com/SMBU-PolarBear-Robot-Team/pb_omni_pid_pursuit_controller)，加入对高曲率路径的速度限制处理
+- [ ] 优化 [pb_omni_pid_pursuit_controller](https://github.com/SMBU-PolarBear-Robotics-Team/pb_omni_pid_pursuit_controller)，加入对高曲率路径的速度限制处理
 
 - [ ] 加入点云分割，支持动态避障
