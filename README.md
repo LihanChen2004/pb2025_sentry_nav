@@ -7,13 +7,13 @@
 
 深圳北理莫斯科大学 北极熊战队 2025 赛季哨兵导航仿真/实车包
 
-| rmul_2024 小陀螺 | rmuc_2024 赛博飞坡 + 先验 pcd 里程计 |
+| rmul_2024 小陀螺 | NAV2 |
 |:-----------------:|:--------------:|
-|![spin_nav.gif](https://raw.githubusercontent.com/LihanChen2004/picx-images-hosting/master/spin_nav.1ove3nw63o.gif)|![rmuc_fly.gif](https://raw.githubusercontent.com/LihanChen2004/picx-images-hosting/master/rmuc_fly_image.1aoyoashvj.gif)|
+|![spin_nav.gif](https://raw.githubusercontent.com/LihanChen2004/picx-images-hosting/master/spin_nav.1ove3nw63o.gif)|![rmuc_lidar_on_chassis_nav](https://raw.githubusercontent.com/LihanChen2004/picx-images-hosting/master/rmuc_lidar_on_chassis_nav.77dkx6qbll.gif)|
 
-| NAV2 |
+| 动态避障 |
 |:-------------:|
-|![rmuc_lidar_on_chassis_nav](https://raw.githubusercontent.com/LihanChen2004/picx-images-hosting/master/rmuc_lidar_on_chassis_nav.77dkx6qbll.gif)|
+|![rmuc_lidar_on_chassis_nav](https://raw.githubusercontent.com/LihanChen2004/picx-images-hosting/master/dynamic_avoid.sz0ny2tct.gif)|
 
 ## 一. 项目介绍
 
@@ -33,7 +33,7 @@
 
 - namespace：
 
-    为了后续拓展多机器人，本项目引入 namespace 的设计，与 ROS 相关的node, topic, action 等都加入了 namespace 前缀。如需查看 tf tree，请使用命令 `ros2 run rqt_tf_tree rqt_tf_tree --ros-args --remap /tf:=/red_standard_robot1/tf --remap /tf_static:=/red_standard_robot1/tf_static`
+    为了后续拓展多机器人，本项目引入 namespace 的设计，与 ROS 相关的 node, topic, action 等都加入了 namespace 前缀。如需查看 tf tree，请使用命令 `ros2 run rqt_tf_tree rqt_tf_tree --ros-args --remap /tf:=/red_standard_robot1/tf --remap /tf_static:=/red_standard_robot1/tf_static`
 
 - LiDAR:
 
