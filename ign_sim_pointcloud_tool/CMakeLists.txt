@@ -29,8 +29,24 @@ ament_auto_add_library(${PROJECT_NAME} SHARED
 
 rclcpp_components_register_node(${PROJECT_NAME}
   PLUGIN ign_sim_pointcloud_tool::PointCloudConverter
-  EXECUTABLE point_cloud_converter_node
+  EXECUTABLE ${PROJECT_NAME}_node
 )
+
+#############
+## Testing ##
+#############
+
+if(BUILD_TESTING)
+set(ament_cmake_clang_format_CONFIG_FILE "${CMAKE_SOURCE_DIR}/.clang-format")
+find_package(ament_lint_auto REQUIRED)
+  list(APPEND AMENT_LINT_AUTO_EXCLUDE
+    ament_cmake_copyright
+    ament_cmake_uncrustify
+    ament_cmake_cpplint
+    ament_cmake_flake8
+  )
+  ament_lint_auto_find_test_dependencies()
+endif()
 
 #############
 ## Install ##

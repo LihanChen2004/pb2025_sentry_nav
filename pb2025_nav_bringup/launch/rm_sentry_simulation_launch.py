@@ -112,7 +112,7 @@ def generate_launch_description():
 
     start_velodyne_convert_tool = Node(
         package="ign_sim_pointcloud_tool",
-        executable="point_cloud_converter_node",
+        executable="ign_sim_pointcloud_tool_node",
         name="point_cloud_converter",
         output="screen",
         namespace=namespace,

@@ -4,9 +4,9 @@
   <name>fake_vel_transform</name>
   <version>1.0.0</version>
   <description>Adapts to NAV2 local path planner when `robot_base_frame` changes drastically.</description>
+  <maintainer email="lihanchen2004@163.com">Lihan Chen</maintainer>
   <license>MIT</license>
   <author email="lihanchen2004@163.com">Lihan Chen</author>
-  <maintainer email="lihanchen2004@163.com">Lihan Chen</maintainer>
 
   <!-- buildtool_depend: dependencies of the build process -->
   <buildtool_depend>ament_cmake</buildtool_depend>
@@ -22,6 +22,7 @@
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
   <test_depend>ament_cmake_clang_format</test_depend>
+  <test_depend>ament_cmake_black</test_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

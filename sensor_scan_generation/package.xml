@@ -2,9 +2,9 @@
   <name>sensor_scan_generation</name>
   <version>1.0.0</version>
   <description>sensor_scan_generation is a package to generate scan data in sensor frame with registered_scan in map frame.</description>
-  <maintainer email="lihanchen2004@smbu.edu.cn">Lihan Chen</maintainer>
+  <maintainer email="lihanchen2004@163.com">Lihan Chen</maintainer>
   <license>MIT</license>
-  <author email="lihanchen2004@smbu.edu.cn">Lihan Chen</author>
+  <author email="lihanchen2004@163.com">Lihan Chen</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
@@ -22,6 +22,8 @@
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
+  <test_depend>ament_cmake_clang_format</test_depend>
+  <test_depend>ament_cmake_black</test_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

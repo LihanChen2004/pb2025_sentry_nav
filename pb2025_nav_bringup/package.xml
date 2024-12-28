@@ -6,6 +6,7 @@
   <description>pb2025_nav_bringup</description>
   <maintainer email="lihanchen2004@163.com">Lihan Chen</maintainer>
   <license>MIT</license>
+  <author email="lihanchen2004@163.com">Lihan Chen</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
