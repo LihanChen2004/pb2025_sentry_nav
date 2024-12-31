@@ -5,7 +5,7 @@
   <version>1.0.0</version>
   <description>pb2025_nav_bringup</description>
   <maintainer email="lihanchen2004@163.com">Lihan Chen</maintainer>
-  <license>MIT</license>
+  <license>Apache-2.0</license>
   <author email="lihanchen2004@163.com">Lihan Chen</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
@@ -24,12 +24,10 @@
   <exec_depend>pb_omni_pid_pursuit_controller</exec_depend>
   <exec_depend>small_gicp_relocalization</exec_depend>
 
-  <test_depend>ament_lint_common</test_depend>
   <test_depend>ament_lint_auto</test_depend>
-  <test_depend>ament_cmake_gtest</test_depend>
-  <test_depend>ament_cmake_pytest</test_depend>
-  <test_depend>launch</test_depend>
-  <test_depend>launch_testing</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+  <test_depend>ament_cmake_clang_format</test_depend>
+  <test_depend>ament_cmake_black</test_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

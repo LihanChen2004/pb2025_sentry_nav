@@ -5,7 +5,7 @@
   <version>1.0.0</version>
   <description>SMBU PolarBear Team Sentry Navigation for Robomaster 2025</description>
   <maintainer email="lihanchen2004@163.com">Lihan Chen</maintainer>
-  <license>MIT</license>
+  <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 

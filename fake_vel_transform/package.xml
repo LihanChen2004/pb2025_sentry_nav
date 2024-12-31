@@ -5,7 +5,7 @@
   <version>1.0.0</version>
   <description>Adapts to NAV2 local path planner when `robot_base_frame` changes drastically.</description>
   <maintainer email="lihanchen2004@163.com">Lihan Chen</maintainer>
-  <license>MIT</license>
+  <license>Apache-2.0</license>
   <author email="lihanchen2004@163.com">Lihan Chen</author>
 
   <!-- buildtool_depend: dependencies of the build process -->

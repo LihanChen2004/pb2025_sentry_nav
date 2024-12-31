@@ -1,7 +1,7 @@
 # pb2025_sentry_nav
 
-![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
-![Build](https://github.com/SMBU-PolarBear-Robotics-Team/pb2025_sentry_nav/actions/workflows/ci.yml/badge.svg)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Build](https://github.com/SMBU-PolarBear-Robotics-Team/pb2025_sentry_nav/actions/workflows/ci.yml/badge.svg)](https://github.com/SMBU-PolarBear-Robotics-Team/pb2025_sentry_nav/actions/workflows/ci.yml/badge.svg)
 
 > **仍在开发中，更新频率较快且不稳定，不考虑向前兼容。请谨慎使用**
 
@@ -162,16 +162,16 @@
 
     2. 在真实环境中，我们**更推荐**使用独立的功能包发布机器人的 TF 信息，例如由上下位机串口通讯模块提供 gimbal_yaw 和 gimbal_pitch 的关节位姿，此时应将 `use_robot_state_pub` 设置为 False。
 
-        如果没有完整的机器人系统，仅测试导航模块时，可将 `use_robot_state_pub` 设置为 True，此时导航模块会发布静态的机器人关节位姿数据以维护 TF 树。  
+        如果没有完整的机器人系统，仅测试导航模块时，可将 `use_robot_state_pub` 设置为 True，此时导航模块会发布静态的机器人关节位姿数据以维护 TF 树。
         注：需要额外克隆并编译 [pb2025_robot_description](https://github.com/SMBU-PolarBear-Robotics-Team/pb2025_robot_description.git)
 
 ### 3.3 手柄控制
 
 默认情况下，PS4 手柄控制已开启。键位映射关系详见 [nav2_params.yaml](./pb2025_nav_bringup/config/simulation/nav2_params.yaml) 中的 `teleop_twist_joy_node` 部分。
 
-左肩键：安全按键，按下后才会发布控制指令到 `cmd_vel`  
-右肩键：加速按键，按下后会使速度控制指令变为原先的两倍  
-左摇杆：发布线速度  
+左肩键：安全按键，按下后才会发布控制指令到 `cmd_vel`
+右肩键：加速按键，按下后会使速度控制指令变为原先的两倍
+左摇杆：发布线速度
 右摇杆：发布角速度
 
 ## TODO
