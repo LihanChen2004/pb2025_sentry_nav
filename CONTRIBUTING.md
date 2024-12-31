@@ -45,9 +45,6 @@ As this project, by default, uses the default GitHub issue labels
 ## Licensing
 
 Any contribution that you make to this repository will
-be under the Apache 2 License, as dictated by that [license](http://www.apache.org/licenses/LICENSE-2.0.html):
-
-Any contribution that you make to this repository will
 be under the Apache 2 License, as dictated by that
 [license](http://www.apache.org/licenses/LICENSE-2.0.html):
 
