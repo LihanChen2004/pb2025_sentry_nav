@@ -1,4 +1,3 @@
-
 # To use:
 #
 #     pre-commit run -a
@@ -33,35 +32,23 @@ repos:
         exclude_types: [rst]
       - id: fix-byte-order-marker
 
-
   # Python hooks
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.19.0
+    rev: v3.19.1
     hooks:
     -   id: pyupgrade
         args: [--py36-plus]
 
-  # PyDocStyle
-  - repo: https://github.com/PyCQA/pydocstyle
-    rev: 6.3.0
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.4
     hooks:
-    - id: pydocstyle
-      args: ["--ignore=D100,D101,D102,D103,D104,D105,D106,D107,D203,D212,D404"]
-
-  - repo: https://github.com/psf/black
-    rev: 24.10.0
-    hooks:
-      - id: black
-
-  - repo: https://github.com/pycqa/flake8
-    rev: 7.1.1
-    hooks:
-    - id: flake8
-      args: ["--extend-ignore=E501"]
+      - id: ruff
+        args: [ --fix ]
+      - id: ruff-format
 
   # CPP hooks
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v19.1.5
+    rev: v14.0.3
     hooks:
       - id: clang-format
         args: ['-fallback-style=none', '-i']
