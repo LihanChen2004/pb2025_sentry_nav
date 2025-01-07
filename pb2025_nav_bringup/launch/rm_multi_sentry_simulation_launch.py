@@ -63,7 +63,7 @@ def generate_launch_description():
 
     declare_map_yaml_cmd = DeclareLaunchArgument(
         "map",
-        default_value=[bringup_dir, "/map/", world, ".yaml"],
+        default_value=[bringup_dir, "/map", "/simulation/", world, ".yaml"],
         description="Full path to map file to load",
     )
 
@@ -83,7 +83,7 @@ def generate_launch_description():
 
     declare_rviz_config_file_cmd = DeclareLaunchArgument(
         "rviz_config",
-        default_value=os.path.join(bringup_dir, "rviz", "nav2_namespaced_view.rviz"),
+        default_value=os.path.join(bringup_dir, "rviz", "nav2_default_view.rviz"),
         description="Full path to the RVIZ config file to use.",
     )
 

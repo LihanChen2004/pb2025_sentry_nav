@@ -73,17 +73,6 @@ def generate_launch_description():
         description="Use simulation (Gazebo) clock if true",
     )
 
-    # declare_xmacro_description_cmd = DeclareLaunchArgument(
-    #     "xmacro_description",
-    #     default_value=os.path.join(
-    #         pkg_pb2025_robot_description_dir,
-    #         "resource",
-    #         "xmacro",
-    #         "rmul24_sentry_robot.sdf.xmacro",
-    #     ),
-    #     description="Robot description in xmacro format",
-    # )
-
     xmacro = XMLMacro4sdf()
     xmacro.set_xml_file(xmacro_description)
 
@@ -104,8 +93,6 @@ def generate_launch_description():
                 executable="joint_state_publisher",
                 name="joint_state_publisher",
                 output="screen",
-                # TODO: Using serial_driver to publish `gimbal_yaw` and `gimbal_pitch` joint.
-                # parameters=[{"source_list": [""]}],
                 remappings=remappings,
             ),
             Node(
@@ -130,7 +117,6 @@ def generate_launch_description():
     ld.add_action(declare_namespace_cmd)
     ld.add_action(declare_use_namespace_cmd)
     ld.add_action(declare_use_sim_time_cmd)
-    # ld.add_action(declare_xmacro_description_cmd)
 
     # Add the actions to launch all nodes
     ld.add_action(bringup_cmd_group)

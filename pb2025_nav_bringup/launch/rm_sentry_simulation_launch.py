@@ -117,7 +117,7 @@ def generate_launch_description():
 
     declare_rviz_config_file_cmd = DeclareLaunchArgument(
         "rviz_config_file",
-        default_value=os.path.join(bringup_dir, "rviz", "nav2_namespaced_view.rviz"),
+        default_value=os.path.join(bringup_dir, "rviz", "nav2_default_view.rviz"),
         description="Full path to the RVIZ config file to use",
     )
 
@@ -147,7 +147,6 @@ def generate_launch_description():
         condition=IfCondition(use_rviz),
         launch_arguments={
             "namespace": namespace,
-            "use_namespace": use_namespace,
             "use_sim_time": use_sim_time,
             "rviz_config": rviz_config_file,
         }.items(),
