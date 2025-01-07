@@ -3,9 +3,9 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Build and Test](https://github.com/SMBU-PolarBear-Robotics-Team/pb2025_sentry_nav/actions/workflows/ci.yml/badge.svg)](https://github.com/SMBU-PolarBear-Robotics-Team/pb2025_sentry_nav/actions/workflows/ci.yml/badge.svg)
 
-> **仍在开发中，更新频率较快且不稳定，不考虑向前兼容。请谨慎使用**
-
 深圳北理莫斯科大学 北极熊战队 2025 赛季哨兵导航仿真/实车包
+
+![PolarBear Logo](https://raw.githubusercontent.com/SMBU-PolarBear-Robotics-Team/.github/main/.docs/image/polarbear_logo_text.png)
 
 | rmul_2024 小陀螺 | NAV2 |
 |:-----------------:|:--------------:|
@@ -25,7 +25,7 @@
 
     mid360 倾斜侧放在底盘上，使用 [point_lio](https://github.com/SMBU-PolarBear-Robotics-Team/point_lio/tree/RM2025_SMBU_auto_sentry) 里程计，[small_gicp](https://github.com/SMBU-PolarBear-Robotics-Team/small_gicp_relocalization) 重定位，[loam_interface](./loam_interface/) 会将 point_lio 输出的 `/cloud_registered` 从 `lidar_odom` 系转换到 `odom` 系，[sensor_scan_generation](./sensor_scan_generation/) 将 `odom` 系的点云转换到 `front_mid360` 系，并发布变换 `odom -> chassis`。
 
-    ![frames_2024_11_16](https://raw.githubusercontent.com/LihanChen2004/picx-images-hosting/master/frames_2024_11_16.6f0pffsux6.webp)
+    ![frames_2025_1_7](https://raw.githubusercontent.com/LihanChen2004/picx-images-hosting/master/frames_2025_1_7.6wqt65dade.webp)
 
 - 关于路径规划：
 
@@ -116,7 +116,7 @@
     slam:=False
     ```
 
-- 仿真 - 多机器人（未完全完成，不建议使用）
+- 仿真 - 多机器人（实验性功能）
 
     当前指定的初始位姿实际上是无效的
 
@@ -165,7 +165,7 @@
         如果没有完整的机器人系统，仅测试导航模块时，可将 `use_robot_state_pub` 设置为 True，此时导航模块会发布静态的机器人关节位姿数据以维护 TF 树。
         注：需要额外克隆并编译 [pb2025_robot_description](https://github.com/SMBU-PolarBear-Robotics-Team/pb2025_robot_description.git)
 
-### 3.3 手柄控制
+### 3.2 手柄控制
 
 默认情况下，PS4 手柄控制已开启。键位映射关系详见 [nav2_params.yaml](./pb2025_nav_bringup/config/simulation/nav2_params.yaml) 中的 `teleop_twist_joy_node` 部分。
 
