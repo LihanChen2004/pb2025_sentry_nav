@@ -4,7 +4,7 @@ point_lio:
     prop_at_freq_of_imu: True
     check_satu: True
     init_map_size: 10
-    point_filter_num: 4                                 # Options: 4, 3
+    point_filter_num: 8                                 # Options: 4, 3
     space_down_sample: True
     filter_size_surf: 0.5                               # Options: 0.5, 0.3, 0.2, 0.15, 0.1
     filter_size_map: 0.5                                # Options: 0.5, 0.3, 0.15, 0.1
@@ -88,6 +88,36 @@ sensor_scan_generation:
     lidar_frame: "front_mid360"
     base_frame: "base_footprint"
     robot_base_frame: "gimbal_yaw"
+
+terrain_analysis:
+  ros__parameters:
+    sensor_frame: "front_mid360"
+    scan_voxel_size: 0.05
+    decay_time: 0.5
+    no_decay_dis: 0.5
+    clearing_dis: 8.0
+    use_sorting: True
+    quantile_z: 0.4
+    consider_drop: False
+    limit_ground_lift: False
+    max_ground_lift: 0.3
+    clear_dy_obs: True
+    min_dy_obs_dis: 0.3
+    min_dy_obs_angle: 0.0
+    min_dy_obs_rel_z: -0.3
+    abs_dy_obs_rel_z_thre: 0.2
+    min_dy_obs_vfov: -28.0
+    max_dy_obs_vfov: 33.0
+    min_dy_obs_point_num: 1
+    no_data_obstacle: False
+    no_data_block_skip_num: 0
+    min_block_point_num: 10
+    vehicle_height: 0.5
+    voxel_point_update_thre: 100
+    voxel_time_update_thre: 1.0
+    min_rel_z: -1.5
+    max_rel_z: 0.5
+    dis_ratio_z: 0.2
 
 fake_vel_transform:
   ros__parameters:
@@ -233,7 +263,6 @@ local_costmap:
       height: 5
       resolution: 0.05
       robot_radius: 0.2
-      plugins: ["static_layer", "inflation_layer"]
       # plugins: ["static_layer", "voxel_layer", "inflation_layer"]
       # voxel_layer:
       #   plugin: "nav2_costmap_2d::VoxelLayer"
@@ -257,6 +286,51 @@ local_costmap:
       #     raytrace_min_range: 0.0
       #     obstacle_max_range: 2.5
       #     obstacle_min_range: 0.5
+      plugins: ["static_layer", "stvl_layer", "inflation_layer"]
+      stvl_layer:
+        plugin: "spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer"
+        # https://github.com/SteveMacenski/spatio_temporal_voxel_layer
+        enabled:                  true
+        voxel_decay:              0.2                               # 如果是线性衰减，单位为秒；如果是指数衰减，则为 e 的 n 次方
+        decay_model:              0                                 # 衰减模型，0=线性，1=指数，-1=持久
+        voxel_size:               0.05                              # 每个体素的尺寸，单位为米
+        track_unknown_space:      true                              # default space is unknown
+        mark_threshold:           0                                 # voxel height
+        update_footprint_enabled: true
+        combination_method:       1                                 # 1=max, 0=override
+        origin_z:                 0.0                               # 单位为米
+        publish_voxel_map:        false                             # default false, 是否发布体素地图
+        transform_tolerance:      0.2                               # 单位为秒
+        mapping_mode:             false                             # default off, saves map not for navigation
+        map_save_duration:        60.0                              # default 60s, how often to autosave
+        observation_sources:      mark clear
+        mark:
+          data_type: PointCloud2
+          topic: <robot_namespace>/terrain_map
+          marking: true
+          clearing: false
+          obstacle_range: 5.0                                       # meters
+          min_obstacle_height: 0.2                                  # default 0, meters
+          max_obstacle_height: 2.0                                  # default 3, meters
+          expected_update_rate: 0.0                                 # default 0, if not updating at this rate at least, remove from buffer
+          observation_persistence: 0.0                              # default 0, use all measurements taken during now-value, 0=latest
+          inf_is_valid: false                                       # default false, for laser scans
+          filter: "voxel"                                           # default passthrough, apply "voxel", "passthrough", or no filter to sensor data, recommend on
+          voxel_min_points: 0                                       # default 0, minimum points per voxel for voxel filter
+          clear_after_reading: true                                 # default false, clear the buffer after the layer gets readings from it
+        clear:
+          enabled: true                                             # default true, can be toggled on/off with associated service call
+          data_type: PointCloud2
+          topic: <robot_namespace>/terrain_map
+          marking: false
+          clearing: true
+          max_z: 5.0                                                # default 10, meters
+          min_z: 0.1                                                # default 0, meters
+          vertical_fov_angle: 1.029                                 # 垂直视场角，单位为弧度，For 3D lidars it's the symmetric FOV about the planar axis.
+          vertical_fov_padding: 0.05                                # 3D Lidar only. Default 0, in meters
+          horizontal_fov_angle: 6.29                                # 3D 激光雷达水平视场角
+          decay_acceleration: 5.0                                   # default 0, 1/s^2.
+          model_type: 1                                             # 0=深度相机，1=3D激光雷达
       static_layer:
         plugin: "nav2_costmap_2d::StaticLayer"
         map_subscribe_transient_local: True
@@ -270,14 +344,13 @@ global_costmap:
   global_costmap:
     ros__parameters:
       use_sim_time: true
-      update_frequency: 1.0
-      publish_frequency: 1.0
+      update_frequency: 5.0
+      publish_frequency: 2.0
       global_frame: map
       robot_base_frame: gimbal_yaw_fake
       robot_radius: 0.2
       resolution: 0.05
       track_unknown_space: true
-      plugins: ["static_layer", "inflation_layer"]
       # plugins: ["static_layer", "obstacle_layer", "inflation_layer"]
       # obstacle_layer:
       #   plugin: "nav2_costmap_2d::ObstacleLayer"
@@ -295,6 +368,51 @@ global_costmap:
       #     raytrace_min_range: 0.0
       #     obstacle_max_range: 2.5
       #     obstacle_min_range: 0.5
+      plugins: ["static_layer", "stvl_layer", "inflation_layer"]
+      stvl_layer:
+        plugin: "spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer"
+        # https://github.com/SteveMacenski/spatio_temporal_voxel_layer
+        enabled:                  true
+        voxel_decay:              0.2                               # 如果是线性衰减，单位为秒；如果是指数衰减，则为 e 的 n 次方
+        decay_model:              0                                 # 衰减模型，0=线性，1=指数，-1=持久
+        voxel_size:               0.1                              # 每个体素的尺寸，单位为米
+        track_unknown_space:      true                              # default space is unknown
+        mark_threshold:           0                                 # voxel height
+        update_footprint_enabled: true
+        combination_method:       1                                 # 1=max, 0=override
+        origin_z:                 0.0                               # 单位为米
+        publish_voxel_map:        false                             # default false, 是否发布体素地图
+        transform_tolerance:      0.2                               # 单位为秒
+        mapping_mode:             false                             # default off, saves map not for navigation
+        map_save_duration:        60.0                              # default 60s, how often to autosave
+        observation_sources:      mark clear
+        mark:
+          data_type: PointCloud2
+          topic: <robot_namespace>/terrain_map
+          marking: true
+          clearing: false
+          obstacle_range: 10.0                                       # meters
+          min_obstacle_height: 0.2                                  # default 0, meters
+          max_obstacle_height: 2.0                                  # default 3, meters
+          expected_update_rate: 0.0                                 # default 0, if not updating at this rate at least, remove from buffer
+          observation_persistence: 0.0                              # default 0, use all measurements taken during now-value, 0=latest
+          inf_is_valid: false                                       # default false, for laser scans
+          filter: "voxel"                                           # default passthrough, apply "voxel", "passthrough", or no filter to sensor data, recommend on
+          voxel_min_points: 0                                       # default 0, minimum points per voxel for voxel filter
+          clear_after_reading: true                                 # default false, clear the buffer after the layer gets readings from it
+        clear:
+          enabled: true                                             # default true, can be toggled on/off with associated service call
+          data_type: PointCloud2
+          topic: <robot_namespace>/terrain_map
+          marking: false
+          clearing: true
+          max_z: 5.0                                                # default 10, meters
+          min_z: 0.1                                                # default 0, meters
+          vertical_fov_angle: 1.029                                 # 垂直视场角，单位为弧度，For 3D lidars it's the symmetric FOV about the planar axis.
+          vertical_fov_padding: 0.05                                # 3D Lidar only. Default 0, in meters
+          horizontal_fov_angle: 6.29                                # 3D 激光雷达水平视场角
+          decay_acceleration: 5.0                                   # default 0, 1/s^2.
+          model_type: 1                                             # 0=深度相机，1=3D激光雷达
       static_layer:
         plugin: "nav2_costmap_2d::StaticLayer"
         map_subscribe_transient_local: True
