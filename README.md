@@ -41,11 +41,28 @@
 
     注：仿真环境中，实际上 point pattern 为 velodyne 样式的机械式扫描。此外，由于仿真器中输出的 PointCloud 缺少部分 field，导致 pointlio 无法正常估计状态，故仿真器输出的点云经过 [ign_sim_pointcloud_tool](./ign_sim_pointcloud_tool/) 处理添加 `time` field。
 
+- 文件结构
+
+    ```plaintext
+    .
+    ├── fake_vel_transform                  # 虚拟速度参考坐标系，以应对云台扫描模式自旋，详见子仓库 README
+    ├── ign_sim_pointcloud_tool             # 仿真器点云处理工具
+    ├── livox_ros_driver2                   # Livox 驱动
+    ├── loam_interface                      # point_lio 等里程计算法接口
+    ├── pb2025_nav_bringup                  # 启动文件
+    ├── pb2025_sentry_nav                   # 本仓库功能包描述文件
+    ├── pb_omni_pid_pursuit_controller      # 路径跟踪控制器
+    ├── point_lio                           # 里程计
+    ├── sensor_scan_generation              # 点云相关坐标变换
+    ├── small_gicp_relocalization           # 重定位
+    └── terrain_analysis                    # 分割出非地面障碍物点云
+    ```
+
 ## 二. 环境配置
 
 - Ubuntu 22.04
 - ROS: [Humble](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html)
-- 配套仿真包（可选）：[rm_gazebo_simulator](https://github.com/SMBU-PolarBear-Robotics-Team/rmul24_gazebo_simulator)
+- 配套仿真包（可选）：[rmu_gazebo_simulator](https://github.com/SMBU-PolarBear-Robotics-Team/rmu_gazebo_simulator)
 
 1. 安装 [Livox SDK2](https://github.com/Livox-SDK/Livox-SDK2)
 
@@ -92,7 +109,7 @@
 
     先验点云用于 point_lio 和 small_gicp，由于点云文件体积较大，故不放在 git 中，请前往 [FlowUs](https://flowus.cn/lihanchen/share/87f81771-fc0c-4e09-a768-db01f4c136f4?code=4PP1RS) 下载。
 
-    > 当前 point_lio with prior_pcd 在 rmuc_2024 的效果并不好，比不带先验点云更容易飘，待 debug 优化。可以选择不使用先验点云，只需要到 [point_lio.yaml](./pb2025_nav_bringup/config/simulation/point_lio.yaml) 中将 `prior_pcd.enable` 设置为 `False` 即可。
+    > 当前 point_lio with prior_pcd 在大场景的效果并不好，比不带先验点云更容易飘，待 Debug 优化
 
 6. 编译
 
@@ -160,7 +177,7 @@
 
     1. 在仿真环境中，由于配套的 Gazebo 仿真器已经发布了机器人的 TF 信息，故不需要再次发布。
 
-    2. 在真实环境中，我们**更推荐**使用独立的功能包发布机器人的 TF 信息，例如由上下位机串口通讯模块提供 gimbal_yaw 和 gimbal_pitch 的关节位姿，此时应将 `use_robot_state_pub` 设置为 False。
+    2. 在真实环境中，我们**更推荐**使用独立的功能包发布机器人的 TF 信息，例如由上下位机串口通讯模块 [standard_robot_pp_ros2](https://github.com/SMBU-PolarBear-Robotics-Team/standard_robot_pp_ros2) 提供 gimbal_yaw 和 gimbal_pitch 的关节位姿，此时应将 `use_robot_state_pub` 设置为 False。
 
         如果没有完整的机器人系统，仅测试导航模块时，可将 `use_robot_state_pub` 设置为 True，此时导航模块会发布静态的机器人关节位姿数据以维护 TF 树。
         注：需要额外克隆并编译 [pb2025_robot_description](https://github.com/SMBU-PolarBear-Robotics-Team/pb2025_robot_description.git)
@@ -184,6 +201,6 @@
 
 - [x] 加入 fake_vel_transform，应对云台旋转时，速度参考系变化剧烈的情况
 
-- [ ] 优化 [pb_omni_pid_pursuit_controller](https://github.com/SMBU-PolarBear-Robotics-Team/pb_omni_pid_pursuit_controller)，加入对高曲率路径的速度限制处理
+- [x] 加入点云分割，支持动态避障
 
-- [ ] 加入点云分割，支持动态避障
+- [ ] 优化 [pb_omni_pid_pursuit_controller](https://github.com/SMBU-PolarBear-Robotics-Team/pb_omni_pid_pursuit_controller)，加入对高曲率路径的速度限制处理
