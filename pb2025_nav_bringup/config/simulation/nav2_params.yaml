@@ -140,6 +140,7 @@ small_gicp_relocalization:
     map_frame: "map"
     odom_frame: "odom"
     base_frame: "base_footprint"
+    robot_base_frame: "gimbal_yaw"
     lidar_frame: "front_mid360"
     # The prior_pcd_file does not need to be specified since it going to be set by defaults in launch.
     # prior_pcd_file: ""
