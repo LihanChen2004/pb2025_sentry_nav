@@ -151,7 +151,7 @@ bt_navigator:
     robot_base_frame: gimbal_yaw_fake
     odom_topic: odometry
     bt_loop_duration: 10
-    default_server_timeout: 20
+    default_server_timeout: 100
     wait_for_service_timeout: 1000
     default_nav_to_pose_bt_xml: $(find-pkg-share pb2025_nav_bringup)/behavior_trees/navigate_to_pose_w_replanning_and_recovery.xml # or $(find-pkg-share my_package)/behavior_tree/my_nav_to_pose_bt.xml
     default_nav_through_poses_bt_xml: $(find-pkg-share pb2025_nav_bringup)/behavior_trees/navigate_through_poses_w_replanning_and_recovery.xml # or $(find-pkg-share my_package)/behavior_tree/my_nav_through_poses_bt.xml
@@ -512,34 +512,37 @@ velocity_smoother:
     deadband_velocity: [0.0, 0.0, 0.0]
     velocity_timeout: 1.0
 
-teleop_twist_joy_node:
+pb_teleop_twist_joy_node:
   ros__parameters:
-    axis_linear:
-      x: 1                        # 左摇杆的水平轴
-      y: 0                        # 左摇杆的垂直轴
-      z: -1                       # Disable
-    scale_linear:
-      x: 1.5
-      y: 1.5
-      z: 0.0
-    scale_linear_turbo:
-      x: 3.0
-      y: 3.0
-      z: 0.0
-
-    axis_angular:
-      roll: -1                    # Disable
-      pitch: -1                   # Disable
-      yaw: 3                      # 右摇杆的水平轴
-    scale_angular:
-      roll: 0.0
-      pitch: 0.0
-      yaw: 3.0
-    scale_angular_turbo:
-      roll: 0.0
-      pitch: 0.0
-      yaw: 6.0
+    robot_base_frame: gimbal_yaw
+    control_mode: auto_control    # Option: auto_control, manual_control
 
     require_enable_button: true
     enable_button: 4              # L1 shoulder button
     enable_turbo_button: 5        # R1 shoulder button
+
+    axis_chassis:
+      x: 1                        # Left thumb stick vertical
+      y: 0                        # Left thumb stick horizontal
+      yaw: 6                      # button_left and button_right
+    scale_chassis:
+      x: 2.5
+      y: 2.5
+      yaw: 3.0
+    scale_chassis_turbo:
+      x: 4.0
+      y: 4.0
+      yaw: 6.0
+
+    axis_gimbal:
+      roll: -1                    # Disable
+      pitch: 4                    # Right thumb stick vertical
+      yaw: 3                      # Right thumb stick horizontal
+    scale_gimbal:
+      roll: 0.0
+      pitch: -0.5
+      yaw: 2.0
+    scale_gimbal_turbo:
+      roll: 0.0
+      pitch: -1.0
+      yaw: 3.0

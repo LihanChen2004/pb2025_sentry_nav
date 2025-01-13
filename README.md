@@ -186,10 +186,7 @@
 
 默认情况下，PS4 手柄控制已开启。键位映射关系详见 [nav2_params.yaml](./pb2025_nav_bringup/config/simulation/nav2_params.yaml) 中的 `teleop_twist_joy_node` 部分。
 
-左肩键：安全按键，按下后才会发布控制指令到 `cmd_vel`
-右肩键：加速按键，按下后会使速度控制指令变为原先的两倍
-左摇杆：发布线速度
-右摇杆：发布角速度
+![teleop_twist_joy.gif](https://raw.githubusercontent.com/LihanChen2004/picx-images-hosting/master/teleop_twist_joy.5j4aav3v3p.gif)
 
 ## TODO
 

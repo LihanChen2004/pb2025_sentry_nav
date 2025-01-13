@@ -101,9 +101,9 @@ def generate_launch_description():
                 ],
             ),
             Node(
-                package="teleop_twist_joy",
-                executable="teleop_node",
-                name="teleop_twist_joy_node",
+                package="pb_teleop_twist_joy",
+                executable="pb_teleop_twist_joy_node",
+                name="pb_teleop_twist_joy_node",
                 output="screen",
                 parameters=[
                     configured_params,
@@ -111,7 +111,11 @@ def generate_launch_description():
                         "publish_stamped_twist": publish_stamped_twist,
                     },
                 ],
-                remappings=[("/cmd_vel", joy_vel)],
+                remappings=[
+                    ("/cmd_vel", joy_vel),
+                    ("/tf", "tf"),
+                    ("/tf_static", "tf_static"),
+                ],
             ),
         ]
     )

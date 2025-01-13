@@ -13,3 +13,6 @@
 [submodule "terrain_analysis"]
 	path = terrain_analysis
 	url = https://github.com/SMBU-PolarBear-Robotics-Team/terrain_analysis.git
+[submodule "pb_teleop_twist_joy"]
+	path = pb_teleop_twist_joy
+	url = https://github.com/SMBU-PolarBear-Robotics-Team/pb_teleop_twist_joy.git

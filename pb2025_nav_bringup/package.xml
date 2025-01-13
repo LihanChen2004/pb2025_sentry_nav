@@ -18,8 +18,8 @@
   <exec_depend>navigation2</exec_depend>
   <exec_depend>nav2_common</exec_depend>
   <exec_depend>spatio_temporal_voxel_layer</exec_depend>
-  <exec_depend>teleop_twist_joy</exec_depend>
   <exec_depend>pb2025_sentry_nav</exec_depend>
+  <exec_depend>pb_teleop_twist_joy</exec_depend>
   <exec_depend>livox_ros_driver2</exec_depend>
   <exec_depend>point_lio</exec_depend>
   <exec_depend>terrain_analysis</exec_depend>
