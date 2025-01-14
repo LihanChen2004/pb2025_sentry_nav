@@ -7,13 +7,11 @@
 
 ![PolarBear Logo](https://raw.githubusercontent.com/SMBU-PolarBear-Robotics-Team/.github/main/.docs/image/polarbear_logo_text.png)
 
-| rmul_2024 小陀螺 | NAV2 |
-|:-----------------:|:--------------:|
-|![spin_nav.gif](https://raw.githubusercontent.com/LihanChen2004/picx-images-hosting/master/spin_nav.1ove3nw63o.gif)|![rmuc_lidar_on_chassis_nav](https://raw.githubusercontent.com/LihanChen2004/picx-images-hosting/master/rmuc_lidar_on_chassis_nav.77dkx6qbll.gif)|
+[Biliili: 谁说在家不能调车！？更适合新手宝宝的 RM 导航仿真](https://www.bilibili.com/video/BV12qcXeHETR)
 
-| 动态避障 |
-|:-------------:|
-|![rmuc_lidar_on_chassis_nav](https://raw.githubusercontent.com/LihanChen2004/picx-images-hosting/master/dynamic_avoid.sz0ny2tct.gif)|
+| NAV2 | 动态避障 |
+|:-----------------:|:--------------:|
+|![rmuc_lidar_on_chassis_nav](https://raw.githubusercontent.com/LihanChen2004/picx-images-hosting/master/rmuc_lidar_on_chassis_nav.77dkx6qbll.gif)|![rmuc_lidar_on_chassis_nav](https://raw.githubusercontent.com/LihanChen2004/picx-images-hosting/master/dynamic_avoid.sz0ny2tct.gif)|
 
 ## 一. 项目介绍
 
