@@ -7,7 +7,7 @@
 
 ![PolarBear Logo](https://raw.githubusercontent.com/SMBU-PolarBear-Robotics-Team/.github/main/.docs/image/polarbear_logo_text.png)
 
-[Biliili: 谁说在家不能调车！？更适合新手宝宝的 RM 导航仿真](https://www.bilibili.com/video/BV12qcXeHETR)
+[Bilibili: 谁说在家不能调车！？更适合新手宝宝的 RM 导航仿真](https://www.bilibili.com/video/BV12qcXeHETR)
 
 | NAV2 | 动态避障 |
 |:-----------------:|:--------------:|
@@ -47,6 +47,7 @@
     ├── ign_sim_pointcloud_tool             # 仿真器点云处理工具
     ├── livox_ros_driver2                   # Livox 驱动
     ├── loam_interface                      # point_lio 等里程计算法接口
+    ├── pb_teleop_twist_joy                 # 手柄控制
     ├── pb2025_nav_bringup                  # 启动文件
     ├── pb2025_sentry_nav                   # 本仓库功能包描述文件
     ├── pb_omni_pid_pursuit_controller      # 路径跟踪控制器
@@ -127,7 +128,7 @@
 
     ```zsh
     ros2 launch pb2025_nav_bringup rm_sentry_simulation_launch.py \
-    world:=rmul_2024 \
+    world:=rmuc_2025 \
     slam:=False
     ```
 
@@ -161,7 +162,7 @@
 
 - `world` : 仿真世界名，关联栅格地图与先验点云图的读取。
 
-    1. 仿真时可选项为 `rmul_2024` or `rmuc_2024`。
+    1. 仿真时可选项为 `rmul_2024` or `rmuc_2024` or `rmuc_2025`。
 
     2. 实车时 `world` 参数名称与栅格地图与先验点云图的文件名称一致。
 
