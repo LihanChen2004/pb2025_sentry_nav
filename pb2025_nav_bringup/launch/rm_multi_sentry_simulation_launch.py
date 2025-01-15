@@ -63,10 +63,13 @@ def generate_launch_description():
 
     declare_map_yaml_cmd = DeclareLaunchArgument(
         "map",
-        default_value=[bringup_dir, "/map", "/simulation/", world, ".yaml"],
+        default_value=[
+            TextSubstitution(text=os.path.join(bringup_dir, "map", "simulation", "")),
+            world,
+            TextSubstitution(text=".yaml"),
+        ],
         description="Full path to map file to load",
     )
-
     declare_params_file_cmd = DeclareLaunchArgument(
         "params_file",
         default_value=os.path.join(

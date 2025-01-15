@@ -20,7 +20,7 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, TextSubstitution
 from launch_ros.actions import Node
 
 
@@ -74,13 +74,21 @@ def generate_launch_description():
 
     declare_map_yaml_cmd = DeclareLaunchArgument(
         "map",
-        default_value=[bringup_dir, "/map", "/reality/", world, ".yaml"],
+        default_value=[
+            TextSubstitution(text=os.path.join(bringup_dir, "map", "reality", "")),
+            world,
+            TextSubstitution(text=".yaml"),
+        ],
         description="Full path to map file to load",
     )
 
     declare_prior_pcd_file_cmd = DeclareLaunchArgument(
         "prior_pcd_file",
-        default_value=[bringup_dir, "/pcd", "/reality/", world, ".pcd"],
+        default_value=[
+            TextSubstitution(text=os.path.join(bringup_dir, "pcd", "simulation", "")),
+            world,
+            TextSubstitution(text=".pcd"),
+        ],
         description="Full path to prior pcd file to load",
     )
 
