@@ -49,14 +49,6 @@ def generate_launch_description():
         "velocity_smoother",
     ]
 
-    # Map fully qualified names to relative ones so the node's namespace can be prepended.
-    # In case of the transforms (tf), currently, there doesn't seem to be a better alternative
-    # https://github.com/ros/geometry2/issues/32
-    # https://github.com/ros/robot_state_publisher/pull/30
-    # TODO(orduno) Substitute with `PushNodeRemapping`
-    #              https://github.com/ros2/launch_ros/issues/56
-    remappings = [("/tf", "tf"), ("/tf_static", "tf_static")]
-
     # Create our own temporary YAML files that include substitutions
     param_substitutions = {"use_sim_time": use_sim_time, "autostart": autostart}
 
@@ -134,7 +126,6 @@ def generate_launch_description():
                 respawn_delay=2.0,
                 parameters=[configured_params],
                 arguments=["--ros-args", "--log-level", log_level],
-                remappings=remappings,
             ),
             Node(
                 package="sensor_scan_generation",
@@ -145,7 +136,6 @@ def generate_launch_description():
                 respawn_delay=2.0,
                 parameters=[configured_params],
                 arguments=["--ros-args", "--log-level", log_level],
-                remappings=remappings,
             ),
             Node(
                 package="terrain_analysis",
@@ -156,7 +146,6 @@ def generate_launch_description():
                 respawn_delay=2.0,
                 parameters=[configured_params],
                 arguments=["--ros-args", "--log-level", log_level],
-                remappings=remappings,
             ),
             Node(
                 package="fake_vel_transform",
@@ -167,7 +156,6 @@ def generate_launch_description():
                 respawn_delay=2.0,
                 parameters=[configured_params],
                 arguments=["--ros-args", "--log-level", log_level],
-                remappings=remappings,
             ),
             Node(
                 package="nav2_controller",
@@ -178,7 +166,7 @@ def generate_launch_description():
                 respawn_delay=2.0,
                 parameters=[configured_params],
                 arguments=["--ros-args", "--log-level", log_level],
-                remappings=remappings + [("cmd_vel", "cmd_vel_controller")],
+                remappings=[("cmd_vel", "cmd_vel_controller")],
             ),
             Node(
                 package="nav2_smoother",
@@ -189,7 +177,6 @@ def generate_launch_description():
                 respawn_delay=2.0,
                 parameters=[configured_params],
                 arguments=["--ros-args", "--log-level", log_level],
-                remappings=remappings,
             ),
             Node(
                 package="nav2_planner",
@@ -200,7 +187,6 @@ def generate_launch_description():
                 respawn_delay=2.0,
                 parameters=[configured_params],
                 arguments=["--ros-args", "--log-level", log_level],
-                remappings=remappings,
             ),
             Node(
                 package="nav2_behaviors",
@@ -211,7 +197,6 @@ def generate_launch_description():
                 respawn_delay=2.0,
                 parameters=[configured_params],
                 arguments=["--ros-args", "--log-level", log_level],
-                remappings=remappings,
             ),
             Node(
                 package="nav2_bt_navigator",
@@ -222,7 +207,6 @@ def generate_launch_description():
                 respawn_delay=2.0,
                 parameters=[configured_params],
                 arguments=["--ros-args", "--log-level", log_level],
-                remappings=remappings,
             ),
             Node(
                 package="nav2_waypoint_follower",
@@ -233,7 +217,6 @@ def generate_launch_description():
                 respawn_delay=2.0,
                 parameters=[configured_params],
                 arguments=["--ros-args", "--log-level", log_level],
-                remappings=remappings,
             ),
             Node(
                 package="nav2_velocity_smoother",
@@ -244,7 +227,7 @@ def generate_launch_description():
                 respawn_delay=2.0,
                 parameters=[configured_params],
                 arguments=["--ros-args", "--log-level", log_level],
-                remappings=remappings + [("cmd_vel", "cmd_vel_controller")],
+                remappings=[("cmd_vel", "cmd_vel_controller")],
             ),
             Node(
                 package="nav2_lifecycle_manager",
@@ -270,77 +253,68 @@ def generate_launch_description():
                 plugin="loam_interface::LoamInterfaceNode",
                 name="loam_interface",
                 parameters=[configured_params],
-                remappings=remappings,
             ),
             ComposableNode(
                 package="sensor_scan_generation",
                 plugin="sensor_scan_generation::SensorScanGenerationNode",
                 name="sensor_scan_generation",
                 parameters=[configured_params],
-                remappings=remappings,
             ),
             ComposableNode(
                 package="terrain_analysis",
                 plugin="terrain_analysis::TerrainAnalysisNode",
                 name="terrain_analysis",
                 parameters=[configured_params],
-                remappings=remappings,
             ),
             ComposableNode(
                 package="fake_vel_transform",
                 plugin="fake_vel_transform::FakeVelTransform",
                 name="fake_vel_transform",
                 parameters=[configured_params],
-                remappings=remappings,
             ),
             ComposableNode(
                 package="nav2_controller",
                 plugin="nav2_controller::ControllerServer",
                 name="controller_server",
                 parameters=[configured_params],
-                remappings=remappings + [("cmd_vel", "cmd_vel_controller")],
+                remappings=[("cmd_vel", "cmd_vel_controller")],
             ),
             ComposableNode(
                 package="nav2_smoother",
                 plugin="nav2_smoother::SmootherServer",
                 name="smoother_server",
                 parameters=[configured_params],
-                remappings=remappings,
             ),
             ComposableNode(
                 package="nav2_planner",
                 plugin="nav2_planner::PlannerServer",
                 name="planner_server",
                 parameters=[configured_params],
-                remappings=remappings,
             ),
             ComposableNode(
                 package="nav2_behaviors",
                 plugin="behavior_server::BehaviorServer",
                 name="behavior_server",
                 parameters=[configured_params],
-                remappings=remappings,
             ),
             ComposableNode(
                 package="nav2_bt_navigator",
                 plugin="nav2_bt_navigator::BtNavigator",
                 name="bt_navigator",
                 parameters=[configured_params],
-                remappings=remappings,
             ),
             ComposableNode(
                 package="nav2_waypoint_follower",
                 plugin="nav2_waypoint_follower::WaypointFollower",
                 name="waypoint_follower",
                 parameters=[configured_params],
-                remappings=remappings,
             ),
             ComposableNode(
                 package="nav2_velocity_smoother",
                 plugin="nav2_velocity_smoother::VelocitySmoother",
                 name="velocity_smoother",
                 parameters=[configured_params],
-                remappings=remappings + [("cmd_vel", "cmd_vel_controller")],
+                remappings=[("cmd_vel", "cmd_vel_controller")],
             ),
             ComposableNode(
                 package="nav2_lifecycle_manager",

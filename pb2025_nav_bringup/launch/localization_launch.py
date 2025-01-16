@@ -43,14 +43,6 @@ def generate_launch_description():
 
     lifecycle_nodes = ["map_server"]
 
-    # Map fully qualified names to relative ones so the node's namespace can be prepended.
-    # In case of the transforms (tf), currently, there doesn't seem to be a better alternative
-    # https://github.com/ros/geometry2/issues/32
-    # https://github.com/ros/robot_state_publisher/pull/30
-    # TODO(orduno) Substitute with `PushNodeRemapping`
-    #              https://github.com/ros2/launch_ros/issues/56
-    remappings = [("/tf", "tf"), ("/tf_static", "tf_static")]
-
     # Create our own temporary YAML files that include substitutions
     param_substitutions = {"use_sim_time": use_sim_time, "yaml_filename": map_yaml_file}
 
@@ -136,7 +128,6 @@ def generate_launch_description():
             {"prior_pcd.prior_pcd_map_path": prior_pcd_file},
         ],
         arguments=["--ros-args", "--log-level", log_level],
-        remappings=remappings,
     )
 
     load_nodes = GroupAction(
@@ -151,7 +142,6 @@ def generate_launch_description():
                 respawn_delay=2.0,
                 parameters=[configured_params],
                 arguments=["--ros-args", "--log-level", log_level],
-                remappings=remappings,
             ),
             Node(
                 package="small_gicp_relocalization",
@@ -162,7 +152,6 @@ def generate_launch_description():
                 respawn_delay=2.0,
                 parameters=[configured_params, {"prior_pcd_file": prior_pcd_file}],
                 arguments=["--ros-args", "--log-level", log_level],
-                remappings=remappings,
             ),
             Node(
                 package="nav2_lifecycle_manager",
@@ -188,14 +177,12 @@ def generate_launch_description():
                 plugin="nav2_map_server::MapServer",
                 name="map_server",
                 parameters=[configured_params],
-                remappings=remappings,
             ),
             ComposableNode(
                 package="small_gicp_relocalization",
                 plugin="small_gicp_relocalization::SmallGicpRelocalizationNode",
                 name="small_gicp_relocalization",
                 parameters=[configured_params, {"prior_pcd_file": prior_pcd_file}],
-                remappings=remappings,
             ),
             ComposableNode(
                 package="nav2_lifecycle_manager",
