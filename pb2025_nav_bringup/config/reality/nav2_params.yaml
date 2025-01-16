@@ -75,7 +75,7 @@ point_lio:
 
 loam_interface:
   ros__parameters:
-    use_sim_time: True
+    use_sim_time: false
     state_estimation_topic: "aft_mapped_to_init"
     registered_scan_topic: "cloud_registered"
     odom_frame: "odom"
@@ -84,7 +84,7 @@ loam_interface:
 
 sensor_scan_generation:
   ros__parameters:
-    use_sim_time: True
+    use_sim_time: false
     lidar_frame: "front_mid360"
     base_frame: "base_footprint"
     robot_base_frame: "gimbal_yaw"
@@ -121,7 +121,7 @@ terrain_analysis:
 
 fake_vel_transform:
   ros__parameters:
-    use_sim_time: True
+    use_sim_time: false
     odom_topic: "odometry"
     robot_base_frame: "gimbal_yaw"
     fake_robot_base_frame: "gimbal_yaw_fake"
@@ -131,7 +131,7 @@ fake_vel_transform:
 
 small_gicp_relocalization:
   ros__parameters:
-    use_sim_time: True
+    use_sim_time: false
     num_threads: 4
     num_neighbors: 10
     global_leaf_size: 0.25
@@ -140,13 +140,14 @@ small_gicp_relocalization:
     map_frame: "map"
     odom_frame: "odom"
     base_frame: "base_footprint"
+    robot_base_frame: "gimbal_yaw"
     lidar_frame: "front_mid360"
     # The prior_pcd_file does not need to be specified since it going to be set by defaults in launch.
     # prior_pcd_file: ""
 
 bt_navigator:
   ros__parameters:
-    use_sim_time: true
+    use_sim_time: false
     global_frame: map
     robot_base_frame: gimbal_yaw_fake
     odom_topic: odometry
@@ -206,7 +207,7 @@ bt_navigator:
 
 controller_server:
   ros__parameters:
-    use_sim_time: true
+    use_sim_time: false
     odom_topic: odometry
     controller_frequency: 20.0
     min_x_velocity_threshold: 0.001
@@ -253,7 +254,7 @@ controller_server:
 local_costmap:
   local_costmap:
     ros__parameters:
-      use_sim_time: true
+      use_sim_time: false
       update_frequency: 10.0
       publish_frequency: 5.0
       global_frame: odom
@@ -343,7 +344,7 @@ local_costmap:
 global_costmap:
   global_costmap:
     ros__parameters:
-      use_sim_time: true
+      use_sim_time: false
       update_frequency: 5.0
       publish_frequency: 2.0
       global_frame: map
@@ -431,7 +432,7 @@ map_server:
 
 map_saver:
   ros__parameters:
-    use_sim_time: true
+    use_sim_time: false
     save_map_timeout: 5.0
     free_thresh_default: 0.25
     occupied_thresh_default: 0.65
@@ -439,7 +440,7 @@ map_saver:
 
 planner_server:
   ros__parameters:
-    use_sim_time: true
+    use_sim_time: false
     expected_planner_frequency: 20.0
     planner_plugins: ["GridBased"]
     GridBased:
@@ -450,7 +451,7 @@ planner_server:
 
 smoother_server:
   ros__parameters:
-    use_sim_time: true
+    use_sim_time: false
     smoother_plugins: ["simple_smoother"]
     simple_smoother:
       plugin: "nav2_smoother::SimpleSmoother"
@@ -460,7 +461,7 @@ smoother_server:
 
 behavior_server:
   ros__parameters:
-    use_sim_time: true
+    use_sim_time: false
     local_costmap_topic: local_costmap/costmap_raw
     global_costmap_topic: global_costmap/costmap_raw
     local_footprint_topic: local_costmap/published_footprint
@@ -488,7 +489,7 @@ behavior_server:
 
 waypoint_follower:
   ros__parameters:
-    use_sim_time: true
+    use_sim_time: false
     loop_rate: 20
     stop_on_failure: false
     waypoint_task_executor_plugin: "wait_at_waypoint"
@@ -499,7 +500,7 @@ waypoint_follower:
 
 velocity_smoother:
   ros__parameters:
-    use_sim_time: true
+    use_sim_time: false
     smoothing_frequency: 20.0
     scale_velocities: False
     feedback: "OPEN_LOOP"
@@ -514,6 +515,7 @@ velocity_smoother:
 
 pb_teleop_twist_joy_node:
   ros__parameters:
+    use_sim_time: false
     robot_base_frame: gimbal_yaw
     control_mode: auto_control    # Option: auto_control, manual_control
 
@@ -540,9 +542,9 @@ pb_teleop_twist_joy_node:
       yaw: 3                      # Right thumb stick horizontal
     scale_gimbal:
       roll: 0.0
-      pitch: -0.5
-      yaw: 2.0
+      pitch: -1.0
+      yaw: 2.5
     scale_gimbal_turbo:
       roll: 0.0
-      pitch: -1.0
-      yaw: 3.0
+      pitch: -1.5
+      yaw: 3.5

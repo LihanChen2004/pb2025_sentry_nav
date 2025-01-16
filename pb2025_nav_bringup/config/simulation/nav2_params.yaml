@@ -515,6 +515,7 @@ velocity_smoother:
 
 pb_teleop_twist_joy_node:
   ros__parameters:
+    use_sim_time: true
     robot_base_frame: gimbal_yaw
     control_mode: auto_control    # Option: auto_control, manual_control
 
@@ -541,9 +542,9 @@ pb_teleop_twist_joy_node:
       yaw: 3                      # Right thumb stick horizontal
     scale_gimbal:
       roll: 0.0
-      pitch: -0.5
-      yaw: 2.0
+      pitch: -1.0
+      yaw: 2.5
     scale_gimbal_turbo:
       roll: 0.0
-      pitch: -1.0
-      yaw: 3.0
+      pitch: -1.5
+      yaw: 3.5
