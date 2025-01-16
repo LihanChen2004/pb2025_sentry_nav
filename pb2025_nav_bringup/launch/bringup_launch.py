@@ -59,14 +59,12 @@ def generate_launch_description():
     # Create our own temporary YAML files that include substitutions
     param_substitutions = {"use_sim_time": use_sim_time, "yaml_filename": map_yaml_file}
 
-    # Only it applies when `use_namespace` is True.
     # '<robot_namespace>' keyword shall be replaced by 'namespace' launch argument
     # in config file 'nav2_multirobot_params.yaml' as a default & example.
     # User defined config file should contain '<robot_namespace>' keyword for the replacements.
     params_file = ReplaceString(
         source_file=params_file,
-        replacements={"<robot_namespace>": ("/", namespace)},
-        condition=IfCondition(use_namespace),
+        replacements={"<robot_namespace>": (namespace)},
     )
 
     configured_params = ParameterFile(

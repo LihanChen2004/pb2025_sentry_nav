@@ -181,7 +181,6 @@ def generate_launch_description():
         condition=IfCondition(use_rviz),
         launch_arguments={
             "namespace": namespace,
-            "use_namespace": use_namespace,
             "use_sim_time": use_sim_time,
             "rviz_config": rviz_config_file,
         }.items(),

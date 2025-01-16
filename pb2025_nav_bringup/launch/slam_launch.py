@@ -101,6 +101,7 @@ def generate_launch_description():
         respawn_delay=2.0,
         arguments=["--ros-args", "--log-level", log_level],
         parameters=[configured_params],
+        remappings=remappings,
     )
 
     start_lifecycle_manager_cmd = Node(
