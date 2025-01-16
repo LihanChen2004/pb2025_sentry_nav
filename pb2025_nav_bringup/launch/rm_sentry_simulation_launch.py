@@ -31,7 +31,6 @@ def generate_launch_description():
 
     # Create the launch configuration variables
     namespace = LaunchConfiguration("namespace")
-    use_namespace = LaunchConfiguration("use_namespace")
     slam = LaunchConfiguration("slam")
     world = LaunchConfiguration("world")
     map_yaml_file = LaunchConfiguration("map")
@@ -51,12 +50,6 @@ def generate_launch_description():
         "namespace",
         default_value="red_standard_robot1",
         description="Top-level namespace",
-    )
-
-    declare_use_namespace_cmd = DeclareLaunchArgument(
-        "use_namespace",
-        default_value="true",
-        description="Whether to apply a namespace to the navigation stack",
     )
 
     declare_slam_cmd = DeclareLaunchArgument(
@@ -164,7 +157,6 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(os.path.join(launch_dir, "bringup_launch.py")),
         launch_arguments={
             "namespace": namespace,
-            "use_namespace": use_namespace,
             "slam": slam,
             "map": map_yaml_file,
             "prior_pcd_file": prior_pcd_file,
@@ -180,7 +172,6 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(os.path.join(launch_dir, "joy_teleop_launch.py")),
         launch_arguments={
             "namespace": namespace,
-            "use_namespace": use_namespace,
             "use_sim_time": use_sim_time,
             "joy_config_file": params_file,
         }.items(),
@@ -190,7 +181,6 @@ def generate_launch_description():
 
     # Declare the launch options
     ld.add_action(declare_namespace_cmd)
-    ld.add_action(declare_use_namespace_cmd)
     ld.add_action(declare_slam_cmd)
     ld.add_action(declare_world_cmd)
     ld.add_action(declare_map_yaml_cmd)

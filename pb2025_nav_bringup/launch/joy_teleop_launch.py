@@ -18,7 +18,6 @@ import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, GroupAction
-from launch.conditions import IfCondition
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node, PushRosNamespace
 from launch_ros.descriptions import ParameterFile
@@ -31,7 +30,6 @@ def generate_launch_description():
 
     # Create the launch configuration variables
     namespace = LaunchConfiguration("namespace")
-    use_namespace = LaunchConfiguration("use_namespace")
     joy_vel = LaunchConfiguration("joy_vel")
     joy_dev = LaunchConfiguration("joy_dev")
     joy_config_file = LaunchConfiguration("joy_config_file")
@@ -52,12 +50,6 @@ def generate_launch_description():
         "namespace",
         default_value="",
         description="Top-level namespace",
-    )
-
-    declare_use_namespace_cmd = DeclareLaunchArgument(
-        "use_namespace",
-        default_value="false",
-        description="Whether to apply a namespace to the navigation stack",
     )
 
     declare_joy_vel_cmd = DeclareLaunchArgument(
@@ -86,7 +78,7 @@ def generate_launch_description():
 
     bringup_cmd_group = GroupAction(
         [
-            PushRosNamespace(condition=IfCondition(use_namespace), namespace=namespace),
+            PushRosNamespace(namespace=namespace),
             Node(
                 package="joy",
                 executable="joy_node",
@@ -125,7 +117,6 @@ def generate_launch_description():
 
     # Declare the launch options
     ld.add_action(declare_namespace_cmd)
-    ld.add_action(declare_use_namespace_cmd)
     ld.add_action(declare_joy_vel_cmd)
     ld.add_action(declare_joy_config_file_cmd)
     ld.add_action(declare_joy_dev_cmd)

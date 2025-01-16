@@ -22,7 +22,6 @@ import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, GroupAction, IncludeLaunchDescription
-from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import PushRosNamespace
@@ -35,7 +34,6 @@ def generate_launch_description():
     )
 
     namespace = LaunchConfiguration("namespace")
-    use_namespace = LaunchConfiguration("use_namespace")
     use_sim_time = LaunchConfiguration("use_sim_time")
     robot_name = LaunchConfiguration("robot_name")
 
@@ -44,12 +42,6 @@ def generate_launch_description():
         "namespace",
         default_value="",
         description="Top-level namespace",
-    )
-
-    declare_use_namespace_cmd = DeclareLaunchArgument(
-        "use_namespace",
-        default_value="false",
-        description="Whether to apply a namespace to the navigation stack",
     )
 
     declare_use_sim_time_cmd = DeclareLaunchArgument(
@@ -66,7 +58,7 @@ def generate_launch_description():
 
     bringup_cmd_group = GroupAction(
         [
-            PushRosNamespace(condition=IfCondition(use_namespace), namespace=namespace),
+            PushRosNamespace(namespace=namespace),
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
                     os.path.join(
@@ -88,7 +80,6 @@ def generate_launch_description():
 
     # Declare the launch options
     ld.add_action(declare_namespace_cmd)
-    ld.add_action(declare_use_namespace_cmd)
     ld.add_action(declare_use_sim_time_cmd)
     ld.add_action(declare_robot_name_cmd)
 

@@ -37,7 +37,6 @@ def generate_launch_description():
 
     # Create the launch configuration variables
     namespace = LaunchConfiguration("namespace")
-    use_namespace = LaunchConfiguration("use_namespace")
     slam = LaunchConfiguration("slam")
     map_yaml_file = LaunchConfiguration("map")
     prior_pcd_file = LaunchConfiguration("prior_pcd_file")
@@ -85,12 +84,6 @@ def generate_launch_description():
 
     declare_namespace_cmd = DeclareLaunchArgument(
         "namespace", default_value="", description="Top-level namespace"
-    )
-
-    declare_use_namespace_cmd = DeclareLaunchArgument(
-        "use_namespace",
-        default_value="false",
-        description="Whether to apply a namespace to the navigation stack",
     )
 
     declare_slam_cmd = DeclareLaunchArgument(
@@ -142,7 +135,7 @@ def generate_launch_description():
     # Specify the actions
     bringup_cmd_group = GroupAction(
         [
-            PushRosNamespace(condition=IfCondition(use_namespace), namespace=namespace),
+            PushRosNamespace(namespace=namespace),
             Node(
                 condition=IfCondition(use_composition),
                 name="nav2_container",
@@ -209,7 +202,6 @@ def generate_launch_description():
 
     # Declare the launch options
     ld.add_action(declare_namespace_cmd)
-    ld.add_action(declare_use_namespace_cmd)
     ld.add_action(declare_slam_cmd)
     ld.add_action(declare_map_yaml_cmd)
     ld.add_action(declare_prior_pcd_file_cmd)
