@@ -30,16 +30,19 @@ def generate_launch_description():
 
     # Create the launch configuration variables
     namespace = LaunchConfiguration("namespace")
+    use_sim_time = LaunchConfiguration("use_sim_time")
     joy_vel = LaunchConfiguration("joy_vel")
     joy_dev = LaunchConfiguration("joy_dev")
     joy_config_file = LaunchConfiguration("joy_config_file")
-    publish_stamped_twist = LaunchConfiguration("publish_stamped_twist")
+
+    # Create our own temporary YAML files that include substitutions
+    param_substitutions = {"use_sim_time": use_sim_time}
 
     configured_params = ParameterFile(
         RewrittenYaml(
             source_file=joy_config_file,
             root_key=namespace,
-            param_rewrites={},
+            param_rewrites=param_substitutions,
             convert_types=True,
         ),
         allow_substs=True,
@@ -50,6 +53,12 @@ def generate_launch_description():
         "namespace",
         default_value="",
         description="Top-level namespace",
+    )
+
+    declare_use_sim_time_cmd = DeclareLaunchArgument(
+        "use_sim_time",
+        default_value="false",
+        description="Use simulation (Gazebo) clock if true",
     )
 
     declare_joy_vel_cmd = DeclareLaunchArgument(
@@ -68,12 +77,6 @@ def generate_launch_description():
 
     declare_joy_dev_cmd = DeclareLaunchArgument(
         "joy_dev", default_value="0", description="The joystick device ID"
-    )
-
-    declare_publish_stamped_twist_cmd = DeclareLaunchArgument(
-        "publish_stamped_twist",
-        default_value="false",
-        description="Whether to publish stamped twist messages",
     )
 
     bringup_cmd_group = GroupAction(
@@ -99,12 +102,7 @@ def generate_launch_description():
                 executable="pb_teleop_twist_joy_node",
                 name="pb_teleop_twist_joy_node",
                 output="screen",
-                parameters=[
-                    configured_params,
-                    {
-                        "publish_stamped_twist": publish_stamped_twist,
-                    },
-                ],
+                parameters=[configured_params],
                 remappings=[
                     ("/cmd_vel", joy_vel),
                     ("/tf", "tf"),
@@ -119,10 +117,10 @@ def generate_launch_description():
 
     # Declare the launch options
     ld.add_action(declare_namespace_cmd)
+    ld.add_action(declare_use_sim_time_cmd)
     ld.add_action(declare_joy_vel_cmd)
     ld.add_action(declare_joy_config_file_cmd)
     ld.add_action(declare_joy_dev_cmd)
-    ld.add_action(declare_publish_stamped_twist_cmd)
 
     # Add the actions to launch the nodes
     ld.add_action(bringup_cmd_group)
