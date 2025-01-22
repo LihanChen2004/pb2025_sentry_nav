@@ -125,7 +125,7 @@ fake_vel_transform:
     odom_topic: "odometry"
     robot_base_frame: "gimbal_yaw"
     fake_robot_base_frame: "gimbal_yaw_fake"
-    input_cmd_vel_topic: "cmd_vel_smoothed"
+    input_cmd_vel_topic: "cmd_vel_nav2_result"
     output_cmd_vel_topic: "cmd_vel"
     spin_speed: 3.14
 
