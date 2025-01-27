@@ -1,3 +1,15 @@
+livox_ros_driver2:
+  ros__parameters:
+    xfer_format: 4                                      # 0-PointCloud2Msg(PointXYZRTL), 1-LivoxCustomMsg, 2-PclPxyziMsg, 3-LivoxImuMsg, 4-AllMsg
+    multi_topic: 0                                      # 0-All LiDARs share the same topic, 1-One LiDAR one topic
+    data_src: 0                                         # 0-lidar, others-Invalid data src
+    publish_freq: 10.0                                  # frequency of publish, 5.0, 10.0, 20.0, 50.0, etc.
+    output_data_type: 0
+    frame_id: front_mid360
+    user_config_path: $(find-pkg-share pb2025_nav_bringup)/config/reality/mid360_user_config.json
+    cmdline_input_bd_code: livox0000000001
+    lvx_file_path: ""
+
 point_lio:
   ros__parameters:
     use_imu_as_input: False                             # Change to True to use IMU as input of Point-LIO
@@ -56,8 +68,8 @@ point_lio:
       gravity_init: [0.0, -4.9, -8.487]              # preknown gravity in the first IMU body frame, use when imu_en is False or start from a non-stationary state
       extrinsic_T: [ -0.011, -0.02329, 0.04412 ]
       extrinsic_R: [ 1.0, 0.0, 0.0,
-                      0.0, 1.0, 0.0,
-                      0.0, 0.0, 1.0 ]
+                     0.0, 1.0, 0.0,
+                     0.0, 0.0, 1.0 ]
 
     odometry:
       publish_odometry_without_downsample: True
@@ -376,7 +388,7 @@ global_costmap:
         enabled:                  true
         voxel_decay:              0.2                               # 如果是线性衰减，单位为秒；如果是指数衰减，则为 e 的 n 次方
         decay_model:              0                                 # 衰减模型，0=线性，1=指数，-1=持久
-        voxel_size:               0.1                              # 每个体素的尺寸，单位为米
+        voxel_size:               0.05                              # 每个体素的尺寸，单位为米
         track_unknown_space:      true                              # default space is unknown
         mark_threshold:           0                                 # voxel height
         update_footprint_enabled: true
@@ -392,7 +404,7 @@ global_costmap:
           topic: <robot_namespace>/terrain_map
           marking: true
           clearing: false
-          obstacle_range: 10.0                                       # meters
+          obstacle_range: 10.0                                      # meters
           min_obstacle_height: 0.2                                  # default 0, meters
           max_obstacle_height: 2.0                                  # default 3, meters
           expected_update_rate: 0.0                                 # default 0, if not updating at this rate at least, remove from buffer

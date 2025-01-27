@@ -22,6 +22,8 @@ from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, TextSubstitution
 from launch_ros.actions import Node
+from launch_ros.descriptions import ParameterFile
+from nav2_common.launch import RewrittenYaml
 
 
 def generate_launch_description():
@@ -133,6 +135,16 @@ def generate_launch_description():
         "use_rviz", default_value="True", description="Whether to start RVIZ"
     )
 
+    configured_params = ParameterFile(
+        RewrittenYaml(
+            source_file=params_file,
+            root_key=namespace,
+            param_rewrites={},
+            convert_types=True,
+        ),
+        allow_substs=True,
+    )
+
     start_robot_state_publisher_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(launch_dir, "rm_sentry_state_publisher_launch.py")
@@ -151,21 +163,7 @@ def generate_launch_description():
         name="livox_ros_driver2",
         output="screen",
         namespace=namespace,
-        parameters=[
-            {
-                "xfer_format": 4,  # 0-PointCloud2Msg(PointXYZRTL), 1-LivoxCustomMsg, 2-PclPxyziMsg, 3-LivoxImuMsg, 4-AllMsg
-                "multi_topic": 0,  # 0-All LiDARs share the same topic, 1-One LiDAR one topic
-                "data_src": 0,  # 0-lidar, others-Invalid data src
-                "publish_freq": 10.0,  # frequency of publish, 5.0, 10.0, 20.0, 50.0, etc.
-                "output_data_type": 0,
-                "frame_id": "front_mid360",
-                "lvx_file_path": "",
-                "user_config_path": os.path.join(
-                    bringup_dir, "config", "reality", "mid360_user_config.json"
-                ),
-                "cmdline_input_bd_code": "livox0000000001",
-            }
-        ],
+        parameters=[configured_params],
     )
 
     rviz_cmd = IncludeLaunchDescription(
