@@ -22,6 +22,8 @@ from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, TextSubstitution
 from launch_ros.actions import Node
+from launch_ros.descriptions import ParameterFile
+from nav2_common.launch import RewrittenYaml
 
 
 def generate_launch_description():
@@ -45,6 +47,16 @@ def generate_launch_description():
     rviz_config_file = LaunchConfiguration("rviz_config_file")
     use_rviz = LaunchConfiguration("use_rviz")
 
+    configured_params = ParameterFile(
+        RewrittenYaml(
+            source_file=params_file,
+            root_key=namespace,
+            param_rewrites={},
+            convert_types=True,
+        ),
+        allow_substs=True,
+    )
+
     # Declare the launch arguments
     declare_namespace_cmd = DeclareLaunchArgument(
         "namespace",
@@ -61,7 +73,7 @@ def generate_launch_description():
     declare_world_cmd = DeclareLaunchArgument(
         "world",
         default_value="rmuc_2025",
-        description="Select world: 'rmul_2024' or 'rmuc_2024' or 'rmuc_2025' (map file share the same name as the this parameter)",
+        description="Select world: 'rmul_2024' or 'rmuc_2024' or 'rmul_2025' or 'rmuc_2025' (map file share the same name as the this parameter)",
     )
 
     declare_map_yaml_cmd = DeclareLaunchArgument(
@@ -129,18 +141,10 @@ def generate_launch_description():
     start_velodyne_convert_tool = Node(
         package="ign_sim_pointcloud_tool",
         executable="ign_sim_pointcloud_tool_node",
-        name="point_cloud_converter",
+        name="ign_sim_pointcloud_tool",
         output="screen",
         namespace=namespace,
-        parameters=[
-            {
-                "pcd_topic": "livox/lidar",
-                "n_scan": 32,
-                "horizon_scan": 1875,
-                "ang_bottom": 7.0,
-                "ang_res_y": 1.84375,  # (7+52) / 32
-            }
-        ],
+        parameters=[configured_params],
     )
 
     rviz_cmd = IncludeLaunchDescription(

@@ -1,3 +1,11 @@
+ign_sim_pointcloud_tool:
+  ros__parameters:
+    pcd_topic: livox/lidar
+    n_scan: 32
+    horizon_scan: 1875
+    ang_bottom: 7.0
+    ang_res_y: 1.84375  # (7+52) / 32
+
 point_lio:
   ros__parameters:
     use_imu_as_input: False                             # Change to True to use IMU as input of Point-LIO
@@ -56,8 +64,8 @@ point_lio:
       gravity_init: [ 0.0, -4.9, -8.487047153776548 ]   # preknown gravity in the first IMU body frame, use when imu_en is False or start from a non-stationary state
       extrinsic_T: [ 0.0, 0.0, 0.0 ]
       extrinsic_R: [ 1.0, 0.0, 0.0,
-                      0.0, 1.0, 0.0,
-                      0.0, 0.0, 1.0 ]
+                     0.0, 1.0, 0.0,
+                     0.0, 0.0, 1.0 ]
 
     odometry:
       publish_odometry_without_downsample: True
@@ -376,7 +384,7 @@ global_costmap:
         enabled:                  true
         voxel_decay:              0.2                               # 如果是线性衰减，单位为秒；如果是指数衰减，则为 e 的 n 次方
         decay_model:              0                                 # 衰减模型，0=线性，1=指数，-1=持久
-        voxel_size:               0.1                              # 每个体素的尺寸，单位为米
+        voxel_size:               0.05                              # 每个体素的尺寸，单位为米
         track_unknown_space:      true                              # default space is unknown
         mark_threshold:           0                                 # voxel height
         update_footprint_enabled: true
@@ -392,7 +400,7 @@ global_costmap:
           topic: <robot_namespace>/terrain_map
           marking: true
           clearing: false
-          obstacle_range: 10.0                                       # meters
+          obstacle_range: 10.0                                      # meters
           min_obstacle_height: 0.2                                  # default 0, meters
           max_obstacle_height: 2.0                                  # default 3, meters
           expected_update_rate: 0.0                                 # default 0, if not updating at this rate at least, remove from buffer
