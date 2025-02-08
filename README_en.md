@@ -58,6 +58,8 @@ This project is based on the [NAV2 Navigation Framework](https://github.com/ros-
     └── terrain_analysis                    # Segmentation of non-ground obstacle point clouds
     ```
 
+## 2. Quick Start
+
 ### 2.1 Setup Environment
 
 - Ubuntu 22.04
@@ -75,7 +77,7 @@ This project is based on the [NAV2 Navigation Framework](https://github.com/ros-
     sudo make install
     ```
 
-### 2.2 Create workspace
+### 2.2 Create Workspace
 
 ```bash
 mkdir -p ~/ros_ws
@@ -109,7 +111,7 @@ colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
 
 You can start the project with the following commands. Use the `Nav2 Goal` plugin in RViz to publish goal pose.
 
-#### Simulation
+#### 2.4.1 Simulation
 
 Single Robot :
 
@@ -132,7 +134,7 @@ blue_standard_robot1={x: 5.6, y: 1.4, yaw: 3.14}; \
 "
 ```
 
-#### Real robot
+#### 2.4.2 Physical Robot
 
 Remember to change the `world` parameter to the actual map name.
 
@@ -169,7 +171,7 @@ Launch arguments are largely common to both simulation and physical robot. Howev
 | 🤖🖥️ | `use_rviz` | Whether to start RViz | bool | True |
 | 🤖 | `use_robot_state_pub` | Whether to start the robot state publisher <br> 1. In simulation, since the supporting Gazebo simulator already publishes the robot's TF information, there is no need to publish it again. <br> 2. In reality, it is **recommended** to use an independent package to publish the robot's TF information. For example, the `gimbal_yaw` and `gimbal_pitch` joint poses are provided by the serial communication module [standard_robot_pp_ros2](https://github.com/SMBU-PolarBear-Robotics-Team/standard_robot_pp_ros2), in which case `use_robot_state_pub` should be set to False. <br> If there is no complete robot system or only the navigation module (this repo) is tested, `use_robot_state_pub` can be set to True. In this case, the navigation module will publish static robot joint pose data to maintain the TF tree. <br> *Note: It is necessary to clone and compile [pb2025_robot_description](https://github.com/SMBU-PolarBear-Robotics-Team/pb2025_robot_description.git) additionally* | bool | False |
 
-> [!NOTE]
+> [!TIP]
 > For more details about this project and the deployment guide for the physical robot, please visit the [Wiki](https://github.com/SMBU-PolarBear-Robotics-Team/pb2025_sentry_nav/wiki).
 
 ### 3.2 Joy teleop

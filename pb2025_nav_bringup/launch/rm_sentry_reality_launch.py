@@ -42,8 +42,6 @@ def generate_launch_description():
     autostart = LaunchConfiguration("autostart")
     use_composition = LaunchConfiguration("use_composition")
     use_respawn = LaunchConfiguration("use_respawn")
-
-    # Launch configuration variables specific to simulation
     rviz_config_file = LaunchConfiguration("rviz_config_file")
     use_robot_state_pub = LaunchConfiguration("use_robot_state_pub")
     use_rviz = LaunchConfiguration("use_rviz")
@@ -80,7 +78,7 @@ def generate_launch_description():
     declare_prior_pcd_file_cmd = DeclareLaunchArgument(
         "prior_pcd_file",
         default_value=[
-            TextSubstitution(text=os.path.join(bringup_dir, "pcd", "simulation", "")),
+            TextSubstitution(text=os.path.join(bringup_dir, "pcd", "reality", "")),
             world,
             TextSubstitution(text=".pcd"),
         ],

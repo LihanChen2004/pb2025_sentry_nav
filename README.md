@@ -58,7 +58,7 @@
     └── terrain_analysis                    # 分割出非地面障碍物点云
     ```
 
-## 2. Quick start
+## 2. Quick Start
 
 ### 2.1 Setup Environment
 
@@ -77,7 +77,7 @@
     sudo make install
     ```
 
-### 2.2 Create workspace
+### 2.2 Create Workspace
 
 ```bash
 mkdir -p ~/ros_ws
@@ -105,13 +105,13 @@ colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
 ```
 
 > [!NOTE]
-> 强烈推荐使用 --symlink-install 选项来构建你的工作空间，因为 pb2025_sentry_nav 广泛使用了 launch.py 文件和 YAML 文件。这个构建参数会为那些非编译的源文件使用符号链接，这意味着当你调整参数文件时，不需要反复重建，只需要重新启动即可。
+> 推荐使用 --symlink-install 选项来构建你的工作空间，因为 pb2025_sentry_nav 广泛使用了 launch.py 文件和 YAML 文件。这个构建参数会为那些非编译的源文件使用符号链接，这意味着当你调整参数文件时，不需要反复重建，只需要重新启动即可。
 
 ### 2.4 Running
 
 可使用以下命令启动，在 RViz 中使用 `Nav2 Goal` 插件发布目标点。
 
-#### 仿真
+#### 2.4.1 仿真
 
 单机器人 :
 
@@ -134,7 +134,7 @@ blue_standard_robot1={x: 5.6, y: 1.4, yaw: 3.14}; \
 "
 ```
 
-#### 实车
+#### 2.4.2 实车
 
 注意修改 `world` 参数为实际地图的名称
 
@@ -171,7 +171,7 @@ use_robot_state_pub:=True
 | 🤖🖥️ | `use_rviz` | 是否启动 RViz | bool | True |
 | 🤖 | `use_robot_state_pub` | 是 是否使用 `robot_state_publisher` 发布机器人的 TF 信息 <br> 1. 在仿真中，由于支持的 Gazebo 仿真器已经发布了机器人的 TF 信息，因此不需要再次发布。 <br> 2. 在实车中，**推荐**使用独立的包发布机器人的 TF 信息。例如，`gimbal_yaw` 和 `gimbal_pitch` 关节位姿由串口模块 [standard_robot_pp_ros2](https://github.com/SMBU-PolarBear-Robotics-Team/standard_robot_pp_ros2) 提供，此时应将 `use_robot_state_pub` 设置为 False。 <br> 如果没有完整的机器人系统或仅测试导航模块（此仓库）时，可将 `use_robot_state_pub` 设置为 True。此时，导航模块将发布静态的机器人关节位姿数据以维护 TF 树。 <br> *注意：需额外克隆并编译 [pb2025_robot_description](https://github.com/SMBU-PolarBear-Robotics-Team/pb2025_robot_description.git)* | bool | False |
 
-> [!NOTE]
+> [!TIP]
 > 关于本项目更多细节与实车部署指南，请前往 [Wiki](https://github.com/SMBU-PolarBear-Robotics-Team/pb2025_sentry_nav/wiki)
 
 ### 2.6 手柄控制
