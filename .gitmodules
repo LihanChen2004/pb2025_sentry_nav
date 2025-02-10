@@ -16,3 +16,6 @@
 [submodule "pb_teleop_twist_joy"]
 	path = pb_teleop_twist_joy
 	url = https://github.com/SMBU-PolarBear-Robotics-Team/pb_teleop_twist_joy.git
+[submodule "pb_nav2_plugins"]
+	path = pb_nav2_plugins
+	url = https://github.com/SMBU-PolarBear-Robotics-Team/pb_nav2_plugins.git

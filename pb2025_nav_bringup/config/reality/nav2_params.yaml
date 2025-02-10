@@ -104,32 +104,32 @@ sensor_scan_generation:
 terrain_analysis:
   ros__parameters:
     sensor_frame: "front_mid360"
-    scan_voxel_size: 0.05
-    decay_time: 0.5
-    no_decay_dis: 0.5
-    clearing_dis: 8.0
-    use_sorting: True
-    quantile_z: 0.4
-    consider_drop: False
-    limit_ground_lift: False
-    max_ground_lift: 0.3
-    clear_dy_obs: True
-    min_dy_obs_dis: 0.3
+    scan_voxel_size: 0.05               # 点云下采样
+    decay_time: 0.5                     # 点云时间差阈值 大于则不会被处理
+    no_decay_dis: 0.0                   # 点云距离阈值 小于该阈值不考虑时间差
+    clearing_dis: 0.0                   # 该距离外的点会被清除
+    use_sorting: True                   # 这个参数开起来就能上坡了；如果 use_sorting,那么就以周围点中的分位点作为地面点，否则以最低点作为地面点；周围其余点相对于地面点的高度作为通过代价，所以对于坡面，有的点的代价是正，有的是负，就相互抵消了；不要与 consider_drop 同时开启，计算上会有冲突
+    quantile_z: 0.2                     # useful if use_sorting is enabled.
+    consider_drop: False                # 考虑凹下去的地面,开启则将相对于地面点的高度取绝对值
+    limit_ground_lift: False            # useful if use_sorting is enabled
+    max_ground_lift: 0.3                # useful if use_sorting is enabled
+    clear_dy_obs: True                  # 清除动态物体的话，有动态物体走过的地方就走不了了
+    min_dy_obs_dis: 0.3                 # 以下参数都是在 clear_dy_obs 的情况下才有用的
     min_dy_obs_angle: 0.0
     min_dy_obs_rel_z: -0.3
     abs_dy_obs_rel_z_thre: 0.2
     min_dy_obs_vfov: -28.0
     max_dy_obs_vfov: 33.0
     min_dy_obs_point_num: 1
-    no_data_obstacle: False
+    no_data_obstacle: False             # treat no data as obstacle
     no_data_block_skip_num: 0
     min_block_point_num: 10
-    vehicle_height: 0.5
+    vehicle_height: 0.5                 # 小于车辆高度的点才会进行处理
     voxel_point_update_thre: 100
     voxel_time_update_thre: 1.0
-    min_rel_z: -1.5
+    min_rel_z: -1.5                     # min_rel_z 以及 max_rel_z 限制了有效点云点的Z值范围，用于对天花板和地板进行处理
     max_rel_z: 0.5
-    dis_ratio_z: 0.2
+    dis_ratio_z: 0.2                    # Z 值的最大最小范围由这两个值决定，但是并不等于这两个值，是有一个比例关系的，距离机器人越远，限定范围就越大，这其中考虑了坡度
 
 fake_vel_transform:
   ros__parameters:
@@ -266,7 +266,7 @@ controller_server:
 local_costmap:
   local_costmap:
     ros__parameters:
-      use_sim_time: false
+      use_sim_time: true
       update_frequency: 10.0
       publish_frequency: 5.0
       global_frame: odom
@@ -276,74 +276,27 @@ local_costmap:
       height: 5
       resolution: 0.05
       robot_radius: 0.2
-      # plugins: ["static_layer", "voxel_layer", "inflation_layer"]
-      # voxel_layer:
-      #   plugin: "nav2_costmap_2d::VoxelLayer"
-      #   enabled: True
-      #   publish_voxel_map: True
-      #   origin_z: 0.0
-      #   z_resolution: 0.05
-      #   z_voxels: 16
-      #   max_obstacle_height: 2.0
-      #   mark_threshold: 0
-      #   observation_sources: scan
-      #   scan:
-      #     # '<robot_namespace>' keyword shall be replaced with 'namespace' where user defined.
-      #     # It doesn't need to start with '/'
-      #     topic: <robot_namespace>/rplidar_a2/scan
-      #     max_obstacle_height: 2.0
-      #     clearing: True
-      #     marking: True
-      #     data_type: "LaserScan"
-      #     raytrace_max_range: 3.0
-      #     raytrace_min_range: 0.0
-      #     obstacle_max_range: 2.5
-      #     obstacle_min_range: 0.5
-      plugins: ["static_layer", "stvl_layer", "inflation_layer"]
-      stvl_layer:
-        plugin: "spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer"
-        # https://github.com/SteveMacenski/spatio_temporal_voxel_layer
-        enabled:                  true
-        voxel_decay:              0.2                               # 如果是线性衰减，单位为秒；如果是指数衰减，则为 e 的 n 次方
-        decay_model:              0                                 # 衰减模型，0=线性，1=指数，-1=持久
-        voxel_size:               0.05                              # 每个体素的尺寸，单位为米
-        track_unknown_space:      true                              # default space is unknown
-        mark_threshold:           0                                 # voxel height
-        update_footprint_enabled: true
-        combination_method:       1                                 # 1=max, 0=override
-        origin_z:                 0.0                               # 单位为米
-        publish_voxel_map:        false                             # default false, 是否发布体素地图
-        transform_tolerance:      0.2                               # 单位为秒
-        mapping_mode:             false                             # default off, saves map not for navigation
-        map_save_duration:        60.0                              # default 60s, how often to autosave
-        observation_sources:      mark clear
-        mark:
-          data_type: PointCloud2
+      plugins: ["static_layer", "obstacle_layer", "inflation_layer"]
+      obstacle_layer:
+        plugin: "pb_nav2_costmap_2d::IntensityObstacleLayer"
+        enabled: True
+        footprint_clearing_enabled: True
+        min_obstacle_intensity: 0.1
+        max_obstacle_intensity: 2.0
+        observation_sources: terrain_map
+        terrain_map:
+          # '<robot_namespace>' keyword shall be replaced with 'namespace' where user defined.
+          # It doesn't need to start with '/'
           topic: <robot_namespace>/terrain_map
-          marking: true
-          clearing: false
-          obstacle_range: 5.0                                       # meters
-          min_obstacle_height: 0.2                                  # default 0, meters
-          max_obstacle_height: 2.0                                  # default 3, meters
-          expected_update_rate: 0.0                                 # default 0, if not updating at this rate at least, remove from buffer
-          observation_persistence: 0.0                              # default 0, use all measurements taken during now-value, 0=latest
-          inf_is_valid: false                                       # default false, for laser scans
-          filter: "voxel"                                           # default passthrough, apply "voxel", "passthrough", or no filter to sensor data, recommend on
-          voxel_min_points: 0                                       # default 0, minimum points per voxel for voxel filter
-          clear_after_reading: true                                 # default false, clear the buffer after the layer gets readings from it
-        clear:
-          enabled: true                                             # default true, can be toggled on/off with associated service call
-          data_type: PointCloud2
-          topic: <robot_namespace>/terrain_map
-          marking: false
-          clearing: true
-          max_z: 5.0                                                # default 10, meters
-          min_z: 0.1                                                # default 0, meters
-          vertical_fov_angle: 1.029                                 # 垂直视场角，单位为弧度，For 3D lidars it's the symmetric FOV about the planar axis.
-          vertical_fov_padding: 0.05                                # 3D Lidar only. Default 0, in meters
-          horizontal_fov_angle: 6.29                                # 3D 激光雷达水平视场角
-          decay_acceleration: 5.0                                   # default 0, 1/s^2.
-          model_type: 1                                             # 0=深度相机，1=3D激光雷达
+          clearing: True
+          marking: True
+          data_type: "PointCloud2"
+          min_obstacle_height: 0.0
+          max_obstacle_height: 2.0
+          obstacle_max_range: 5.0
+          obstacle_min_range: 0.2
+          raytrace_max_range: 8.0
+          raytrace_min_range: 0.2
       static_layer:
         plugin: "nav2_costmap_2d::StaticLayer"
         map_subscribe_transient_local: True
@@ -351,12 +304,12 @@ local_costmap:
         plugin: "nav2_costmap_2d::InflationLayer"
         cost_scaling_factor: 4.0
         inflation_radius: 0.7
-      always_send_full_costmap: True
+      always_send_full_costmap: False
 
 global_costmap:
   global_costmap:
     ros__parameters:
-      use_sim_time: false
+      use_sim_time: true
       update_frequency: 5.0
       publish_frequency: 2.0
       global_frame: map
@@ -364,68 +317,27 @@ global_costmap:
       robot_radius: 0.2
       resolution: 0.05
       track_unknown_space: true
-      # plugins: ["static_layer", "obstacle_layer", "inflation_layer"]
-      # obstacle_layer:
-      #   plugin: "nav2_costmap_2d::ObstacleLayer"
-      #   enabled: True
-      #   observation_sources: scan
-      #   scan:
-      #     # '<robot_namespace>' keyword shall be replaced with 'namespace' where user defined.
-      #     # It doesn't need to start with '/'
-      #     topic: <robot_namespace>/rplidar_a2/scan
-      #     max_obstacle_height: 2.0
-      #     clearing: True
-      #     marking: True
-      #     data_type: "LaserScan"
-      #     raytrace_max_range: 3.0
-      #     raytrace_min_range: 0.0
-      #     obstacle_max_range: 2.5
-      #     obstacle_min_range: 0.5
-      plugins: ["static_layer", "stvl_layer", "inflation_layer"]
-      stvl_layer:
-        plugin: "spatio_temporal_voxel_layer/SpatioTemporalVoxelLayer"
-        # https://github.com/SteveMacenski/spatio_temporal_voxel_layer
-        enabled:                  true
-        voxel_decay:              0.2                               # 如果是线性衰减，单位为秒；如果是指数衰减，则为 e 的 n 次方
-        decay_model:              0                                 # 衰减模型，0=线性，1=指数，-1=持久
-        voxel_size:               0.05                              # 每个体素的尺寸，单位为米
-        track_unknown_space:      true                              # default space is unknown
-        mark_threshold:           0                                 # voxel height
-        update_footprint_enabled: true
-        combination_method:       1                                 # 1=max, 0=override
-        origin_z:                 0.0                               # 单位为米
-        publish_voxel_map:        false                             # default false, 是否发布体素地图
-        transform_tolerance:      0.2                               # 单位为秒
-        mapping_mode:             false                             # default off, saves map not for navigation
-        map_save_duration:        60.0                              # default 60s, how often to autosave
-        observation_sources:      mark clear
-        mark:
-          data_type: PointCloud2
+      plugins: ["static_layer", "obstacle_layer", "inflation_layer"]
+      obstacle_layer:
+        plugin: "pb_nav2_costmap_2d::IntensityObstacleLayer"
+        enabled: True
+        footprint_clearing_enabled: True
+        min_obstacle_intensity: 0.1
+        max_obstacle_intensity: 2.0
+        observation_sources: terrain_map
+        terrain_map:
+          # '<robot_namespace>' keyword shall be replaced with 'namespace' where user defined.
+          # It doesn't need to start with '/'
           topic: <robot_namespace>/terrain_map
-          marking: true
-          clearing: false
-          obstacle_range: 10.0                                      # meters
-          min_obstacle_height: 0.2                                  # default 0, meters
-          max_obstacle_height: 2.0                                  # default 3, meters
-          expected_update_rate: 0.0                                 # default 0, if not updating at this rate at least, remove from buffer
-          observation_persistence: 0.0                              # default 0, use all measurements taken during now-value, 0=latest
-          inf_is_valid: false                                       # default false, for laser scans
-          filter: "voxel"                                           # default passthrough, apply "voxel", "passthrough", or no filter to sensor data, recommend on
-          voxel_min_points: 0                                       # default 0, minimum points per voxel for voxel filter
-          clear_after_reading: true                                 # default false, clear the buffer after the layer gets readings from it
-        clear:
-          enabled: true                                             # default true, can be toggled on/off with associated service call
-          data_type: PointCloud2
-          topic: <robot_namespace>/terrain_map
-          marking: false
-          clearing: true
-          max_z: 5.0                                                # default 10, meters
-          min_z: 0.1                                                # default 0, meters
-          vertical_fov_angle: 1.029                                 # 垂直视场角，单位为弧度，For 3D lidars it's the symmetric FOV about the planar axis.
-          vertical_fov_padding: 0.05                                # 3D Lidar only. Default 0, in meters
-          horizontal_fov_angle: 6.29                                # 3D 激光雷达水平视场角
-          decay_acceleration: 5.0                                   # default 0, 1/s^2.
-          model_type: 1                                             # 0=深度相机，1=3D激光雷达
+          clearing: True
+          marking: True
+          data_type: "PointCloud2"
+          min_obstacle_height: 0.0
+          max_obstacle_height: 2.0
+          obstacle_max_range: 10.0
+          obstacle_min_range: 0.2
+          raytrace_max_range: 8.0
+          raytrace_min_range: 0.2
       static_layer:
         plugin: "nav2_costmap_2d::StaticLayer"
         map_subscribe_transient_local: True
@@ -433,7 +345,7 @@ global_costmap:
         plugin: "nav2_costmap_2d::InflationLayer"
         cost_scaling_factor: 4.0
         inflation_radius: 0.7
-      always_send_full_costmap: True
+      always_send_full_costmap: False
 
 # The yaml_filename does not need to be specified since it going to be set by defaults in launch.
 # If you'd rather set it in the yaml, remove the default "map" value in the tb3_simulation_launch.py
@@ -483,7 +395,7 @@ behavior_server:
     spin:
       plugin: "nav2_behaviors/Spin"
     backup:
-      plugin: "nav2_behaviors/BackUp"
+      plugin: "pb_nav2_behaviors/BackUpFreeSpace"
     drive_on_heading:
       plugin: "nav2_behaviors/DriveOnHeading"
     wait:
