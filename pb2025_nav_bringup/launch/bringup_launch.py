@@ -22,7 +22,11 @@ from launch.actions import (
     IncludeLaunchDescription,
     SetEnvironmentVariable,
 )
-from launch.conditions import IfCondition, LaunchConfigurationNotEquals
+from launch.conditions import (
+    IfCondition,
+    LaunchConfigurationEquals,
+    LaunchConfigurationNotEquals,
+)
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch_ros.actions import Node, PushRosNamespace, SetRemap
@@ -54,6 +58,12 @@ def generate_launch_description():
     # '<robot_namespace>' keyword shall be replaced by 'namespace' launch argument
     # in config file 'nav2_multirobot_params.yaml' as a default & example.
     # User defined config file should contain '<robot_namespace>' keyword for the replacements.
+    params_file = ReplaceString(
+        source_file=params_file,
+        replacements={"<robot_namespace>": ("")},
+        condition=LaunchConfigurationEquals("namespace", ""),
+    )
+
     params_file = ReplaceString(
         source_file=params_file,
         replacements={"<robot_namespace>": ("/", namespace)},
