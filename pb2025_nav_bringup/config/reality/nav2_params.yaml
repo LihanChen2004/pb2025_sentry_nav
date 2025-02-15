@@ -244,6 +244,7 @@ controller_server:
       translation_kp: 3.0
       translation_ki: 0.1
       translation_kd: 0.3
+      enable_rotation: false
       rotation_kp: 3.0
       rotation_ki: 0.1
       rotation_kd: 0.3
