@@ -15,9 +15,11 @@
 #ifndef FAKE_VEL_TRANSFORM__FAKE_VEL_TRANSFORM_HPP_
 #define FAKE_VEL_TRANSFORM__FAKE_VEL_TRANSFORM_HPP_
 
+#include <example_interfaces/msg/detail/float32__struct.hpp>
 #include <memory>
 #include <string>
 
+#include "example_interfaces/msg/float32.hpp"
 #include "geometry_msgs/msg/twist.hpp"
 #include "nav_msgs/msg/odometry.hpp"
 #include "rclcpp/rclcpp.hpp"
@@ -35,8 +37,11 @@ private:
 
   void cmdVelCallback(const geometry_msgs::msg::Twist::SharedPtr msg);
 
+  void cmdSpinCallback(example_interfaces::msg::Float32::SharedPtr msg);
+
   rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr cmd_vel_sub_;
   rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_sub_;
+  rclcpp::Subscription<example_interfaces::msg::Float32>::SharedPtr cmd_spin_sub_;
 
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr cmd_vel_chassis_pub_;
 
@@ -46,6 +51,7 @@ private:
   std::string robot_base_frame_;
   std::string fake_robot_base_frame_;
   std::string odom_topic_;
+  std::string cmd_spin_topic_;
   std::string input_cmd_vel_topic_;
   std::string output_cmd_vel_topic_;
   float spin_speed_;

@@ -27,22 +27,26 @@ FakeVelTransform::FakeVelTransform(const rclcpp::NodeOptions & options)
   this->declare_parameter<std::string>("robot_base_frame", "gimbal_link");
   this->declare_parameter<std::string>("fake_robot_base_frame", "gimbal_link_fake");
   this->declare_parameter<std::string>("odom_topic", "odom");
+  this->declare_parameter<std::string>("cmd_spin_topic", "cmd_spin");
   this->declare_parameter<std::string>("input_cmd_vel_topic", "");
   this->declare_parameter<std::string>("output_cmd_vel_topic", "");
-  this->declare_parameter<float>("spin_speed", 0.0);
+  this->declare_parameter<float>("init_spin_speed", 0.0);
 
   this->get_parameter("robot_base_frame", robot_base_frame_);
   this->get_parameter("odom_topic", odom_topic_);
   this->get_parameter("fake_robot_base_frame", fake_robot_base_frame_);
+  this->get_parameter("cmd_spin_topic", cmd_spin_topic_);
   this->get_parameter("input_cmd_vel_topic", input_cmd_vel_topic_);
   this->get_parameter("output_cmd_vel_topic", output_cmd_vel_topic_);
-  this->get_parameter("spin_speed", spin_speed_);
+  this->get_parameter("init_spin_speed", spin_speed_);
 
   tf_broadcaster_ = std::make_unique<tf2_ros::TransformBroadcaster>(*this);
 
   cmd_vel_chassis_pub_ =
     this->create_publisher<geometry_msgs::msg::Twist>(output_cmd_vel_topic_, 1);
 
+  cmd_spin_sub_ = this->create_subscription<example_interfaces::msg::Float32>(
+    cmd_spin_topic_, 1, std::bind(&FakeVelTransform::cmdSpinCallback, this, std::placeholders::_1));
   cmd_vel_sub_ = this->create_subscription<geometry_msgs::msg::Twist>(
     input_cmd_vel_topic_, 1,
     std::bind(&FakeVelTransform::cmdVelCallback, this, std::placeholders::_1));
@@ -62,6 +66,11 @@ void FakeVelTransform::odomCallback(const nav_msgs::msg::Odometry::SharedPtr msg
   q.setRPY(0, 0, -current_robot_base_angle_);
   t.transform.rotation = tf2::toMsg(q);
   tf_broadcaster_->sendTransform(t);
+}
+
+void FakeVelTransform::cmdSpinCallback(const example_interfaces::msg::Float32::SharedPtr msg)
+{
+  spin_speed_ = msg->data;
 }
 
 // Transform the velocity from `robot_base_frame` to `fake_robot_base_frame`

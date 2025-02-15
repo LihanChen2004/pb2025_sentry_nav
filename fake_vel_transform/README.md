@@ -13,12 +13,14 @@
 
 * `input_cmd_vel_topic` (`geometry_msgs/msg/Twist`) - 机器人的速度指令
 * `odom_topic` (`nav_msgs/msg/Odometry`) - 里程计数据
+* `cmd_spin_topic` (`example_interfaces/msg/Float32`) - 控制底盘固定旋转速度，将会叠加到 `output_cmd_vel_topic` 中
 
 ## Parameters
 
 * `odom_topic` (`string`, default: "odom") - 里程计话题。里程计的 frame_id 与 `robot_base_frame` 参数保持一致
 * `robot_base_frame` (`string`, default: "gimbal_link") - 速度参考坐标系
 * `fake_robot_base_frame` (`string`, default: "gimbal_link_fake") - 伪速度参考坐标系
+* `cmd_spin_topic` (`string`, default: "cmd_spin") - 控制底盘固定旋转速度的话题
 * `input_cmd_vel_topic` (`string`, default: "") - 输入速度指令的话题
 * `output_cmd_vel_topic` (`string`, default: "") - 输出速度指令的话题。将原本基于 `fake_robot_base_frame` 的速度变换到 `robot_base_frame` 后发布
-* `spin_speed` (`double`, default: 0.0) - 底盘固定旋转速度
+* `init_spin_speed` (`double`, default: 0.0) - 若没有接收 `cmd_spin_topic`，则使用该值作为固定旋转速度

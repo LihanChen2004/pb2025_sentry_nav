@@ -139,7 +139,8 @@ fake_vel_transform:
     fake_robot_base_frame: "gimbal_yaw_fake"
     input_cmd_vel_topic: "cmd_vel_nav2_result"
     output_cmd_vel_topic: "cmd_vel"
-    spin_speed: 0.0
+    cmd_spin_topic: "cmd_spin"
+    init_spin_speed: 3.14
 
 small_gicp_relocalization:
   ros__parameters:
