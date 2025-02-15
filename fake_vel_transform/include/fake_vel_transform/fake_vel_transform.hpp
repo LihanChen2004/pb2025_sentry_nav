@@ -15,7 +15,6 @@
 #ifndef FAKE_VEL_TRANSFORM__FAKE_VEL_TRANSFORM_HPP_
 #define FAKE_VEL_TRANSFORM__FAKE_VEL_TRANSFORM_HPP_
 
-#include <example_interfaces/msg/detail/float32__struct.hpp>
 #include <memory>
 #include <string>
 

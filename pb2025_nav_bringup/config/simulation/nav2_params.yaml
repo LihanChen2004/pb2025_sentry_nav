@@ -286,7 +286,6 @@ local_costmap:
           # '<robot_namespace>' keyword shall be replaced with 'namespace' where user defined.
           # It doesn't need to start with '/'
           topic: <robot_namespace>/terrain_map
-          max_obstacle_height: 2.0
           clearing: True
           marking: True
           data_type: "PointCloud2"
@@ -328,7 +327,6 @@ global_costmap:
           # '<robot_namespace>' keyword shall be replaced with 'namespace' where user defined.
           # It doesn't need to start with '/'
           topic: <robot_namespace>/terrain_map
-          max_obstacle_height: 2.0
           clearing: True
           marking: True
           data_type: "PointCloud2"
